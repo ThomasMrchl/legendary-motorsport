@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Catalog from "@/components/Catalog.vue";
 
+
 Vue.use(Router)
 
 export default new Router({
@@ -10,7 +11,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
+      name: 'Home',
       component: Home
     },
     {
