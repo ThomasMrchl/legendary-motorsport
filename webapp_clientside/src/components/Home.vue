@@ -1,10 +1,13 @@
 <template>
-  <p>The official Legendary Motorsport website.</p>
+  <div>
+    <p>The official Legendary Motorsport website.</p>
+    <router-link to="/catalog/4">Catalog</router-link>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Legendary Motorsport',
+  name: 'Home',
   data () {
     return {
       msg: 'Welcome to the Legendary Motorsport website.',
