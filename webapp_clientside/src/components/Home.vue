@@ -3,11 +3,11 @@
     <section class="banner">
       <img :src="require('@/assets/img/carbanner.jpg')">
       <h1>Legendary Motorsport</h1>
-      <h4>Your favorite legendary cars</h4>
+      <p>TOP END HIGH PERFORMANCE CARS AT GREAT PRICES</p>
     </section>
     <section class="parta">
       <section class="text-container">
-        <h2>Luxury cars just for you !</h2>
+        <div class="title">LUXURY CARS JUST FOR YOU !</div>
         <p>Are you looking for a safe, eco-friendly, fuel-efficient car that's practical for getting around town? You're on the wrong website. Are you looking to have them dripping as you pass by? Welcome! You're in a safe place. </p>
       </section>
       <img :src="require('@/assets/img/gta5garage.png')">
@@ -15,7 +15,7 @@
     <section class="parta">
       <img id="rd" :src="require('@/assets/img/map(2).png')">
       <section class="text-container">
-        <h2>Wherever you are we are close !</h2>
+        <div class="title">ALWAYS CLOSE TO YOU !</div>
         <p>You're angry because your ex is showing off in the newest ferrari of her boyfriend ? Fuck off ! Come quickly get a pure beauty of metal and ride to paradise. With our huge collection of franchises, Legendary Motorsport is always 3 footsteps near. </p>
       </section>
     </section>
@@ -58,10 +58,14 @@ div {
   left: 0;
 }
 
-.banner h1, .banner h4 {
+.banner h1, .banner p {
   position: absolute;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ajoute un effet d'ombre pour que le texte soit plus lisible */
+}
+
+img :hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }
 
 .banner h1 {
@@ -72,12 +76,21 @@ div {
   margin: 0;
 }
 
-.banner h4 {
+.banner p {
   font-size: 24px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   margin: 0;
+}
+
+.title {
+  font-size: 24px;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .parta {
@@ -118,6 +131,11 @@ div {
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   flex: 0 1 400px;
+  transition: box-shadow 0.3s ease-in-out; /* Transition added for smooth hover effect */
+}
+
+.parta img:hover {
+  box-shadow: 0 30px 30px rgba(0, 0, 0, 0.4); /* Shadow effect on hover */
 }
 
 @media (max-width: 768px) {
