@@ -20,6 +20,20 @@
               <div class="subtitle">HIGH PERFORMANCE CARS AT GREAT PRICES</div>
             </div>
           </div>
+          <div class="content-sort-button">
+              <div class="sort-button">Sort by Price</div>
+          </div>
+          <div class="grid-wrapper">
+            <div class="grid-container">
+              <div class="buttons">
+                <button>FEATURED</button>
+                <button>2 DOOR</button>
+                <button>4 DOOR</button>
+                <button>MOTORCYCLES</button>
+                <button>SPECIAL</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -37,7 +51,7 @@ export default {
 
 <style scoped>
 .catalog-wrapper {
-  height: 100vh;
+  heith: auto;
   background-color: #48130E;
   display: flex;
   flex-direction: column;
@@ -101,7 +115,7 @@ export default {
   position: relative;
   top: -320px;
   margin: 0 auto;
-  max-width: 1600px;
+  max-width: 1200px;
   width: 100%;
   display: flex;
 }
@@ -110,11 +124,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 5px;
+  width: 100%;
 }
 
 .content-title {
   color: white;
-  margin-left: 250px;
 }
 
 .title {
@@ -133,5 +148,75 @@ export default {
   flex-direction: column;
   gap: 5px;
   margin-top: 25px;
+}
+
+.content-sort-button {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sort-button {
+  background: linear-gradient(to bottom, #FF4500, #8B0000);
+  color: white;
+  width: 225px;
+  border: 1px solid #5A0000;
+  border-radius: 5px;
+  padding: 15px 20px;
+  font-family: 'Arial';
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 27px;
+}
+
+button {
+  flex-grow: 1;
+  background: linear-gradient(to bottom, #FF4500, #8B0000);
+  color: white;
+  border: 1px solid #5A0000;
+  border-radius: 5px;
+  padding: 15px 20px;
+  font-family: 'Arial';
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+button:hover {
+  background-color: #A52A2A;
+}
+
+button.active {
+  background-color: #660000;
+  border: 2px solid #FF4500;
+}
+
+.grid-wrapper {
+  box-sizing: border-box;
+  max-width: 1200px;
+  height: 100vh;
+  width: 100%;
+  background-color: #240102;
+  border: 2px solid #6B0707;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  gap: 15px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
 }
 </style>
