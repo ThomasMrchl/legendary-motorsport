@@ -19,6 +19,7 @@
         <p>You're angry because your ex is showing off in the newest ferrari of her boyfriend ? Fuck off ! Come quickly get a pure beauty of metal and ride to paradise. With our huge collection of franchises, Legendary Motorsport is always 3 footsteps near. </p>
       </section>
     </section>
+
   </div>
 </template>
 
@@ -27,6 +28,7 @@ export default {
   name: 'Home',
   data () {
     return {
+      msg: 'Home',
     }
   }
 }
@@ -132,8 +134,5 @@ div {
     padding-right: 0;
   }
 }
-
-
-
 
 </style>
