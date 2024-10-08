@@ -30,8 +30,9 @@
 export default {
   name: 'Catalog',
   data() {
-    return {}
+    return {
   }
+}
 }
 </script>
 
