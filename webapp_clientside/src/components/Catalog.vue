@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="catalog-wrapper">
     <div class="catalog-container">
@@ -41,6 +43,8 @@
 </template>
 
 <script setup>
+import Footer from "./Footer.vue";
+
 export default {
   name: 'Catalog',
   data() {
