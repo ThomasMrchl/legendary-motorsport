@@ -31,16 +31,16 @@
         <img :src="require('@/assets/img/cartag.jpg')" alt="A beautiful tagged black car">
       </section>
     </section>
+    <Footer/>
   </div>
 </template>
 
 <script>
+import Footer from "./Footer.vue";
 export default {
   name: 'Home',
-  data () {
-    return {
-      msg: 'Home',
-    }
+  components: {
+    Footer,
   }
 }
 </script>
@@ -68,9 +68,9 @@ button {
 }
 
 .ligne-separation {
-  height: 1px; /* Épaisseur de la ligne */
-  background-color: #b91c19; /* Couleur blanche */
-  margin: 20px 0; /* Espace autour de la ligne */
+  height: 1px;
+  background-color: #b91c19;
+  margin: 20px 0;
   border: none;
 }
 
@@ -92,25 +92,24 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(5px); /* Applique un flou à l'image */
+  filter: blur(5px);
   position: absolute;
   top: 0;
   left: 0;
 }
 
 .banner p {
-  position: relative; /* Change to relative so it flows with the button */
+  position: relative;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   font-size: 24px;
   text-align: center;
-  margin-bottom: 20px; /* Add margin to create space between text and button */
+  margin-bottom: 20px;
 }
 
 .background {
-  background: linear-gradient(135deg, #000000, #1c1c1c, #333333);
-  opacity: 1; /* Remettre à 1 pour ne pas affecter l'opacité des éléments internes */
-  z-index: -1; /* Place l'arrière-plan derrière tout le reste */
+  background-color: #210100;
+  z-index: -1;
 }
 
 img :hover {
@@ -158,7 +157,6 @@ img :hover {
   max-width: 30%;
 }
 
-/* Group h2 and p inside the text-container */
 .text-container {
   flex: 1;
   padding-right: 20px;
@@ -182,11 +180,11 @@ img :hover {
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   flex: 0 1 400px;
-  transition: box-shadow 0.3s ease-in-out; /* Transition added for smooth hover effect */
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .content-section img:hover {
-  box-shadow: 0 30px 30px rgba(0, 0, 0, 0.4); /* Shadow effect on hover */
+  box-shadow: 0 30px 30px rgba(0, 0, 0, 0.4);
 }
 
 @media (max-width: 768px) {
