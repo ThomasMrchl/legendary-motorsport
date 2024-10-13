@@ -1,4 +1,19 @@
+<script>
+import carsData from '../data/fake-cars.json';
+import CarCard from "./CarCard.vue";
 
+export default {
+  name: 'Catalog',
+  components: {
+    CarCard
+  },
+  data() {
+    return {
+      cars: carsData
+    };
+  }
+}
+</script>
 
 <template>
   <div class="catalog-wrapper">
@@ -34,6 +49,18 @@
                 <button>MOTORCYCLES</button>
                 <button>SPECIAL</button>
               </div>
+              <div class="car-list">
+                <CarCard
+                  v-for="car in cars"
+                  :key="car.id"
+                  :model="car.model"
+                  :brand="car.brand"
+                  :price="car.latest_price"
+                  :color="car.color"
+                  :status="car.status"
+                  :horsepower="car.horsepower"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -42,19 +69,37 @@
   </div>
 </template>
 
-<script setup>
-import Footer from "./Footer.vue";
-
-export default {
-  name: 'Catalog',
-  data() {
-    return {
-  }
-}
-}
-</script>
-
 <style scoped>
+.grid-wrapper {
+  box-sizing: border-box;
+  max-width: 1200px;
+  width: 100%;
+  background-color: #240102;
+  border: 2px solid #6B0707;
+  padding: 20px;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
+}
+
+/* Style pour afficher les cartes 3 par 3 */
+.car-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colonnes égales */
+  gap: 20px; /* Espacement entre les cartes */
+}
+
 .catalog-wrapper {
   heith: auto;
   background-color: #48130E;
@@ -196,32 +241,5 @@ button:hover {
 button.active {
   background-color: #660000;
   border: 2px solid #FF4500;
-}
-
-.grid-wrapper {
-  box-sizing: border-box;
-  max-width: 1200px;
-  height: 100vh;
-  width: 100%;
-  background-color: #240102;
-  border: 2px solid #6B0707;
-}
-
-.grid-container {
-  display: flex;
-  flex-direction: column;
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  gap: 15px;
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 5px;
-  width: 100%;
 }
 </style>
