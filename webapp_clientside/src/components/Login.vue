@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="banner">
-            <img :src="require('@/assets/img/carbanner.jpg')">
-            <h1>Welcome to Legendary Motorsport</h1>
+            <img :src="require('@/assets/img/loginBanner.jpg')">
+            <h1 style="color: #EE0000;">Legendary Motorsport</h1>
             <p>Please log in to continue</p>
         </div>
         <div class="parta">
@@ -14,9 +14,14 @@
                         <label for="username">Username:</label>
                         <input type="text" id="username" v-model="username" required>
                     </div>
+                    
                     <div>
                         <label for="password">Password:</label>
                         <input type="password" id="password" v-model="password" required>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <label for="rememberMe">Remember me</label>
                     </div>
                     <button type="submit">Login</button>
                 </form>
@@ -61,7 +66,7 @@ div {
 .banner {
   position: relative;
   width: 100%;
-  height: 400px; /* Tu peux ajuster la hauteur en fonction de ce que tu souhaites */
+  height: 400px;
   overflow: hidden;
 }
 
@@ -69,7 +74,7 @@ div {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(5px); /* Applique un flou à l'image */
+  filter: blur(5px); 
   position: absolute;
   top: 0;
   left: 0;
@@ -78,7 +83,7 @@ div {
 .banner h1, .banner p {
   position: absolute;
   color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ajoute un effet d'ombre pour que le texte soit plus lisible */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
 }
 
 img :hover {
@@ -93,6 +98,7 @@ img :hover {
   margin: 0;
 }
 
+
 .banner p {
   font-size: 24px;
   top: 50%;
@@ -100,6 +106,7 @@ img :hover {
   transform: translate(-50%, -50%);
   margin: 0;
 }
+
 
 .title {
   font-size: 24px;
@@ -130,6 +137,32 @@ img :hover {
   padding-right: 20px;
 }
 
+/* Style a box around the text container*/
+.text-container {
+  background-color: #320505;
+  padding: 40px;
+  border-radius: 8px;
+  border-width: 4px;
+  border-color: #a30000;
+}
+
+.text-container form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #320505;
+  color: #ffffff;
+  padding: 20px; 
+  border-radius: 8px; 
+  outline: 3px solid #ae0000;
+}
+
+.text-container form > div {
+  background-color: #320505; 
+  padding: 10px;
+  border-radius: 4px;
+}
+
 .text-container h2 {
   font-size: 2rem;
   color: white;
@@ -151,6 +184,9 @@ img :hover {
   transition: box-shadow 0.3s ease-in-out; /* Transition added for smooth hover effect */
 }
 
+.parta h2{
+  color:#ab0000
+}
 .parta img:hover {
   box-shadow: 0 30px 30px rgba(0, 0, 0, 0.4); /* Shadow effect on hover */
 }
@@ -169,5 +205,6 @@ img :hover {
     padding-right: 0;
   }
 }
+
 
 </style>

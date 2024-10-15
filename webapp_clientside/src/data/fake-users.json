@@ -1,0 +1,112 @@
+[
+  {
+    "first_name": "John",
+    "last_name": "Doe",
+    "birth_date": "1980-05-15",
+    "adress": 1,
+    "email": "john.doe@example.com",
+    "password": "encryptedPassword1",
+    "is_employee": true,
+    "role": "Manager",
+    "yearly_salary": 60000
+  },
+  {
+    "first_name": "Jane",
+    "last_name": "Smith",
+    "birth_date": "1990-07-20",
+    "adress": 2,
+    "email": "jane.smith@example.com",
+    "password": "encryptedPassword2",
+    "is_employee": false,
+    "role": "Customer",
+    "yearly_salary": null
+  },
+  {
+    "first_name": "Alex",
+    "last_name": "Johnson",
+    "birth_date": "1985-09-12",
+    "adress": 3,
+    "email": "alex.johnson@example.com",
+    "password": "encryptedPassword3",
+    "is_employee": true,
+    "role": "Sales",
+    "yearly_salary": 45000
+  },
+  {
+    "first_name": "Emily",
+    "last_name": "Davis",
+    "birth_date": "1995-03-25",
+    "adress": 4,
+    "email": "emily.davis@example.com",
+    "password": "encryptedPassword4",
+    "is_employee": false,
+    "role": "Customer",
+    "yearly_salary": null
+  },
+  {
+    "first_name": "Michael",
+    "last_name": "Wilson",
+    "birth_date": "1978-11-30",
+    "adress": 5,
+    "email": "michael.wilson@example.com",
+    "password": "encryptedPassword5",
+    "is_employee": true,
+    "role": "Technician",
+    "yearly_salary": 50000
+  },
+  {
+    "first_name": "Olivia",
+    "last_name": "Brown",
+    "birth_date": "1992-08-10",
+    "adress": 6,
+    "email": "olivia.brown@example.com",
+    "password": "encryptedPassword6",
+    "is_employee": true,
+    "role": "HR",
+    "yearly_salary": 55000
+  },
+  {
+    "first_name": "William",
+    "last_name": "Taylor",
+    "birth_date": "1983-02-17",
+    "adress": 7,
+    "email": "william.taylor@example.com",
+    "password": "encryptedPassword7",
+    "is_employee": false,
+    "role": "Customer",
+    "yearly_salary": null
+  },
+  {
+    "first_name": "Sophia",
+    "last_name": "Anderson",
+    "birth_date": "1988-12-05",
+    "adress": 8,
+    "email": "sophia.anderson@example.com",
+    "password": "encryptedPassword8",
+    "is_employee": true,
+    "role": "Manager",
+    "yearly_salary": 65000
+  },
+  {
+    "first_name": "James",
+    "last_name": "Thomas",
+    "birth_date": "1975-01-22",
+    "adress": 9,
+    "email": "james.thomas@example.com",
+    "password": "encryptedPassword9",
+    "is_employee": true,
+    "role": "CEO",
+    "yearly_salary": 100000
+  },
+  {
+    "first_name": "Isabella",
+    "last_name": "Moore",
+    "birth_date": "2000-06-08",
+    "adress": 10,
+    "email": "isabella.moore@example.com",
+    "password": "encryptedPassword10",
+    "is_employee": false,
+    "role": "Customer",
+    "yearly_salary": null
+  }
+]

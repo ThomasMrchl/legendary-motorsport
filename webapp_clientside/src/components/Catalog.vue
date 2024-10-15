@@ -1,3 +1,32 @@
+<script>
+import carsData from '../data/fake-cars.json';
+import usersData from '../data/fake-users.json';
+import francesData from '../data/fake-franchises.json';
+import CarCard from "./CarCard.vue";
+import UserCard from "./UserCard.vue";
+import FranchiseCard from "./FranchiseCard.vue";
+import Footer from './Footer.vue';
+
+export default {
+  name: 'Catalog',
+  components: {
+    CarCard,
+    UserCard,
+    FranchiseCard
+  },
+  data() {
+    return {
+      cars: carsData,
+      users: usersData,
+      franchises: francesData
+    };
+  },
+  components: {
+    Footer,
+  }
+}
+</script>
+
 <template>
   <div>
     <div class="catalog-wrapper">
@@ -34,6 +63,38 @@
                   <button>SPECIAL</button>
                 </div>
               </div>
+              <div class="car-list">
+                <CarCard
+                  v-for="car in cars"
+                  :key="car.id"
+                  :model="car.model"
+                  :brand="car.brand"
+                  :price="car.latest_price"
+                  :color="car.color"
+                  :status="car.status"
+                  :horsepower="car.horsepower"
+                />
+              </div>
+              <div class="user-list">
+                <UserCard
+                  v-for="user in users"
+                  :key="user.email"
+                  :firstname="user.first_name"
+                  :lastname="user.last_name"
+                  :isemployee="user.is_employee"
+                  :role="user.role"
+                />
+              </div>
+              <div class="franchise-list">
+                <FranchiseCard
+                  v-for="franchise in franchises"
+                  :key="franchise.franchise_id"
+                  :name="franchise.franchise_name"
+                  :capacity="franchise.franchise_capacity"
+                  :phonenumber="franchise.franchise_phone_number"
+                  :openingyear="franchise.franchise_opening_year"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -43,21 +104,48 @@
   </div>
 </template>
 
-<script>
-import Footer from './Footer.vue';
-export default {
-  name: 'Catalog',
-  data() {
-    return {
-  }
-  },
-  components: {
-    Footer,
-  }
-}
-</script>
-
 <style scoped>
+.grid-wrapper {
+  box-sizing: border-box;
+  max-width: 1200px;
+  width: 100%;
+  background-color: #240102;
+  border: 2px solid #6B0707;
+  padding: 20px;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+  width: 100%;
+}
+
+.car-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
 .catalog-wrapper {
   height: auto;
   background-color: #48130E;
@@ -199,32 +287,5 @@ button:hover {
 button.active {
   background-color: #660000;
   border: 2px solid #FF4500;
-}
-
-.grid-wrapper {
-  box-sizing: border-box;
-  max-width: 1200px;
-  height: 100vh;
-  width: 100%;
-  background-color: #240102;
-  border: 2px solid #6B0707;
-}
-
-.grid-container {
-  display: flex;
-  flex-direction: column;
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  gap: 15px;
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 5px;
-  width: 100%;
 }
 </style>
