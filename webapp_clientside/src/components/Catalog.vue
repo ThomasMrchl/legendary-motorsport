@@ -1,15 +1,23 @@
 <script>
 import carsData from '../data/fake-cars.json';
+import usersData from '../data/fake-users.json';
+import francesData from '../data/fake-franchises.json';
 import CarCard from "./CarCard.vue";
+import UserCard from "./UserCard.vue";
+import FranchiseCard from "./FranchiseCard.vue";
 
 export default {
   name: 'Catalog',
   components: {
-    CarCard
+    CarCard,
+    UserCard,
+    FranchiseCard
   },
   data() {
     return {
-      cars: carsData
+      cars: carsData,
+      users: usersData,
+      franchises: francesData
     };
   }
 }
@@ -61,6 +69,26 @@ export default {
                   :horsepower="car.horsepower"
                 />
               </div>
+              <div class="user-list">
+                <UserCard
+                  v-for="user in users"
+                  :key="user.email"
+                  :firstname="user.first_name"
+                  :lastname="user.last_name"
+                  :isemployee="user.is_employee"
+                  :role="user.role"
+                />
+              </div>
+              <div class="franchise-list">
+                <FranchiseCard
+                  v-for="franchise in franchises"
+                  :key="franchise.franchise_id"
+                  :name="franchise.franchise_name"
+                  :capacity="franchise.franchise_capacity"
+                  :phonenumber="franchise.franchise_phone_number"
+                  :openingyear="franchise.franchise_opening_year"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -93,11 +121,22 @@ export default {
   width: 100%;
 }
 
-/* Style pour afficher les cartes 3 par 3 */
 .car-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colonnes égales */
-  gap: 20px; /* Espacement entre les cartes */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
 .catalog-wrapper {
