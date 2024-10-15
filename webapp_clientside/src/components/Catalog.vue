@@ -5,7 +5,6 @@ import francesData from '../data/fake-franchises.json';
 import CarCard from "./CarCard.vue";
 import UserCard from "./UserCard.vue";
 import FranchiseCard from "./FranchiseCard.vue";
-import Footer from './Footer.vue';
 
 export default {
   name: 'Catalog',
@@ -20,48 +19,43 @@ export default {
       users: usersData,
       franchises: francesData
     };
-  },
-  components: {
-    Footer,
   }
 }
 </script>
 
 <template>
-  <div>
-    <div class="catalog-wrapper">
-      <div class="catalog-container">
-        <div class="main-banner">
-          <div class="banner">
-            <div class="banner-content">
+  <div class="catalog-wrapper">
+    <div class="catalog-container">
+      <div class="main-banner">
+        <div class="banner">
+          <div class="banner-content">
 
-            </div>
-            <div class="banner-image">
-              <img src="../assets/img/LegendaryBanner.png" alt="Banner Image">
-            </div>
+          </div>
+          <div class="banner-image">
+            <img src="../assets/img/LegendaryBanner.png" alt="Banner Image">
           </div>
         </div>
-        <div class="content-wrapper">
-          <div class="content-container">
-            <div class="content-title">
-              <img src="../assets/img/LegendaryLogo.png" style="width: 400px;" alt="Legendary Logo">
-              <div class="content-title-text">
-                <div class="title">CHOOSE FROM OUR TOP END</div>
-                <div class="subtitle">HIGH PERFORMANCE CARS AT GREAT PRICES</div>
-              </div>
+      </div>
+      <div class="content-wrapper">
+        <div class="content-container">
+          <div class="content-title">
+            <img src="../assets/img/LegendaryLogo.png" style="width: 400px;" alt="Legendary Logo">
+            <div class="content-title-text">
+              <div class="title">CHOOSE FROM OUR TOP END</div>
+              <div class="subtitle">HIGH PERFORMANCE CARS AT GREAT PRICES</div>
             </div>
-            <div class="content-sort-button">
-                <div class="sort-button">Sort by Price</div>
-            </div>
-            <div class="grid-wrapper">
-              <div class="grid-container">
-                <div class="buttons">
-                  <button>FEATURED</button>
-                  <button>2 DOOR</button>
-                  <button>4 DOOR</button>
-                  <button>MOTORCYCLES</button>
-                  <button>SPECIAL</button>
-                </div>
+          </div>
+          <div class="content-sort-button">
+              <div class="sort-button">Sort by Price</div>
+          </div>
+          <div class="grid-wrapper">
+            <div class="grid-container">
+              <div class="buttons">
+                <button>FEATURED</button>
+                <button>2 DOOR</button>
+                <button>4 DOOR</button>
+                <button>MOTORCYCLES</button>
+                <button>SPECIAL</button>
               </div>
               <div class="car-list">
                 <CarCard
@@ -100,7 +94,6 @@ export default {
         </div>
       </div>
     </div>
-    <Footer/>
   </div>
 </template>
 
@@ -147,7 +140,7 @@ export default {
 }
 
 .catalog-wrapper {
-  height: auto;
+  heith: auto;
   background-color: #48130E;
   display: flex;
   flex-direction: column;

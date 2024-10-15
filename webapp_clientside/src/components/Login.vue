@@ -28,12 +28,10 @@
             </div>
             <img :src="require('@/assets/img/pegassi_osiris.jpg')">
         </div>
-        <Footer/>
     </div>
 </template>
 
 <script>
-import Footer from './Footer.vue';
 export default {
     data() {
         return {
@@ -47,9 +45,6 @@ export default {
             console.log('Username:', this.username);
             console.log('Password:', this.password);
         }
-    },
-    components: {
-      Footer,
     }
 };
 </script>
