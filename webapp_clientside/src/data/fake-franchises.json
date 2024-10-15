@@ -1,0 +1,47 @@
+[
+  {
+    "franchise_id": 1,
+    "franchise_adress": 101,
+    "franchise_owner": 201,
+    "franchise_capacity": 50,
+    "franchise_name": "Los Antos",
+    "franchise_phone_number": "3313232323",
+    "franchise_opening_year": 2001
+  },
+  {
+    "franchise_id": 2,
+    "franchise_adress": 102,
+    "franchise_owner": 202,
+    "franchise_capacity": 60,
+    "franchise_name": "Sun Valley",
+    "franchise_phone_number": "3314242424",
+    "franchise_opening_year": 2005
+  },
+  {
+    "franchise_id": 3,
+    "franchise_adress": 103,
+    "franchise_owner": 203,
+    "franchise_capacity": 45,
+    "franchise_name": "Green Hills",
+    "franchise_phone_number": "3315252525",
+    "franchise_opening_year": 1998
+  },
+  {
+    "franchise_id": 4,
+    "franchise_adress": 104,
+    "franchise_owner": 204,
+    "franchise_capacity": 80,
+    "franchise_name": "Mountain View",
+    "franchise_phone_number": "3316262626",
+    "franchise_opening_year": 2010
+  },
+  {
+    "franchise_id": 5,
+    "franchise_adress": 105,
+    "franchise_owner": 205,
+    "franchise_capacity": 70,
+    "franchise_name": "Ocean Breeze",
+    "franchise_phone_number": "3317272727",
+    "franchise_opening_year": 2015
+  }
+]
