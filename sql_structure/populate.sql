@@ -18,6 +18,7 @@ CREATE TABLE user (
     role LONGTEXT,
     yearly_salary LONGTEXT,
     FOREIGN KEY (adress) REFERENCES adress(id_adress)
+    
 );
 CREATE TABLE franchise (
     id_franchise INT PRIMARY KEY AUTO_INCREMENT,
