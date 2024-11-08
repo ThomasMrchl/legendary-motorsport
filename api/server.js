@@ -9,6 +9,8 @@ app.listen(process.env.WEB_PORT, '0.0.0.0',
     function() { console.log("Listening on "+process.env.WEB_PORT); }
 );
 
+const carRoutes = require('./routes/car');
+
 // *** MIDDLEWARES ***
 // Import middlewares
 const bodyParserMiddlewares = require('./middlewares/bodyParser');
@@ -32,6 +34,8 @@ app.get('/', (request, response) => { // 'GET' as a HTTP VERB, not as a 'getter'
     response.send(`Hello, dear ${clientIp}. I am a nodejs website...`);
     response.end(); // optional
 });
+
+app.use('/car', carRoutes);
 
 // setup additional routes
 // app.use(routeBase, callback);
