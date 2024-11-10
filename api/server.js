@@ -35,7 +35,7 @@ app.get('/', (request, response) => { // 'GET' as a HTTP VERB, not as a 'getter'
     response.end(); // optional
 });
 
-app.use('/car', carRoutes);
+// app.use('/car', carRoutes);
 
 // setup additional routes
 // app.use(routeBase, callback);
