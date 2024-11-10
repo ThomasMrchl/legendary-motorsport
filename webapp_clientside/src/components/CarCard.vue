@@ -8,12 +8,17 @@ export default {
     color: String,
     status: String,
     horsepower: Number
+  },
+  methods: {
+    redirectToRoute(route) {
+      this.$router.push(route);
+    }
   }
 }
 </script>
 
 <template>
-  <div class="car-card">
+  <div class="car-card" @click="redirectToRoute('/login')">
     <div class="top-banner">
       <p>DEALERSHIP NAME</p>
     </div>
@@ -47,6 +52,10 @@ export default {
 .car-card {
   display: flex;
   flex-direction: column;
+  
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .car-image img {
