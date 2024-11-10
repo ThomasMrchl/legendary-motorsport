@@ -19,6 +19,11 @@ export default {
       users: usersData,
       franchises: francesData
     };
+  },
+  methods: {
+    redirectToRoute(route) {
+      this.$router.push(route);
+    }
   }
 }
 </script>
@@ -38,7 +43,7 @@ export default {
       </div>
       <div class="content-wrapper">
         <div class="content-container">
-          <div class="content-title">
+          <div class="content-title" @click="redirectToRoute('/')">
             <img src="../assets/img/LegendaryLogo.png" style="width: 400px;" alt="Legendary Logo">
             <div class="content-title-text">
               <div class="title">CHOOSE FROM OUR TOP END</div>
@@ -46,7 +51,7 @@ export default {
             </div>
           </div>
           <div class="content-sort-button">
-              <div class="sort-button">Sort by Price</div>
+              <div class="sort-button" @click="redirectToRoute('/login')">LOGIN OR SIGN UP NOW !</div>
           </div>
           <div class="grid-wrapper">
             <div class="grid-container">
@@ -55,7 +60,7 @@ export default {
                 <button>2 DOOR</button>
                 <button>4 DOOR</button>
                 <button>MOTORCYCLES</button>
-                <button>SPECIAL</button>
+                <button>SPECIALE</button>
               </div>
               <div class="car-list">
                 <CarCard
@@ -69,6 +74,7 @@ export default {
                   :horsepower="car.horsepower"
                 />
               </div>
+              <!--
               <div class="user-list">
                 <UserCard
                   v-for="user in users"
@@ -88,6 +94,7 @@ export default {
                   :phonenumber="franchise.franchise_phone_number"
                   :openingyear="franchise.franchise_opening_year"
                 />
+                -->
               </div>
             </div>
           </div>
@@ -219,6 +226,10 @@ export default {
 
 .content-title {
   color: white;
+
+  &:hover{
+    cursor: pointer;
+  }
 }
 
 .title {

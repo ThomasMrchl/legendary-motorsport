@@ -42,6 +42,7 @@ export default {
 .car-card {
   display: flex;
   flex-direction: column;
+  width: 800px;
 }
 
 button {
