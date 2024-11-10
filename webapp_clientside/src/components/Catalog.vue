@@ -3,21 +3,17 @@ import carsData from '../data/fake-cars.json';
 import usersData from '../data/fake-users.json';
 import francesData from '../data/fake-franchises.json';
 import CarCard from "./CarCard.vue";
-import UserCard from "./UserCard.vue";
-import FranchiseCard from "./FranchiseCard.vue";
+import Footer from "./Footer.vue";
 
 export default {
   name: 'Catalog',
   components: {
     CarCard,
-    UserCard,
-    FranchiseCard
+    Footer
   },
   data() {
     return {
-      cars: carsData,
-      users: usersData,
-      franchises: francesData
+      cars: carsData
     };
   },
   methods: {
@@ -74,32 +70,13 @@ export default {
                   :horsepower="car.horsepower"
                 />
               </div>
-              <!--
-              <div class="user-list">
-                <UserCard
-                  v-for="user in users"
-                  :key="user.email"
-                  :firstname="user.first_name"
-                  :lastname="user.last_name"
-                  :isemployee="user.is_employee"
-                  :role="user.role"
-                />
-              </div>
-              <div class="franchise-list">
-                <FranchiseCard
-                  v-for="franchise in franchises"
-                  :key="franchise.franchise_id"
-                  :name="franchise.franchise_name"
-                  :capacity="franchise.franchise_capacity"
-                  :phonenumber="franchise.franchise_phone_number"
-                  :openingyear="franchise.franchise_opening_year"
-                />
-                -->
+
               </div>
             </div>
           </div>
         </div>
       </div>
+    <Footer />
     </div>
   </div>
 </template>

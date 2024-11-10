@@ -1,13 +1,9 @@
-<script setup>
-
-</script>
-
 <template>
   <footer class="footer">
     <img class="seller" :src="require('@/assets/img/women.png')" alt="Seller image">
     <div class="footer-content">
       <div>
-        <img class="logo" :src="require('@/assets/img/LegendaryLogo.png')" alt="Logo Legendary Motorsport">
+        <RouterLink to="/"><img class="logo" :src="require('@/assets/img/LegendaryLogo2.png')" alt="Logo Legendary Motorsport"></RouterLink>
         <p class="footer-description">The most <span class="red">luxuous</span> and <span class="red">self-confident</span> cars of Los Santos.</p>
         <nav class="footer-nav">
           <ul>
@@ -24,6 +20,10 @@
   </footer>
 </template>
 
+<script setup>
+
+</script>
+
 <style scoped>
 .footer {
   padding-top: 25px;
@@ -35,6 +35,7 @@
   flex-direction: row;
   justify-content: center;
   gap: 25px;
+  width: 100%;
 }
 
 .red {
@@ -42,8 +43,12 @@
 }
 
 .logo {
-  width: 200px;
+  width: 40%;
   height: auto;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .footer-content {
