@@ -1,205 +1,209 @@
 <template>
-    <div>
-        <div class="banner">
-            <img :src="require('@/assets/img/loginBanner.jpg')">
-            <h1 style="color: #EE0000;">Legendary Motorsport</h1>
-            <p>Please log in to continue</p>
+  <div class="login-wrapper">
+    <div class="login-container">
+      <div class="content">
+        <div class="top-content">
+          <img
+            @click="redirectToRoute('/')"
+            class="logo"
+            :src="require('@/assets/img/LegendaryLogo2.png')"
+            alt="Logo Legendary Motorsport"
+          />
+          <h2>Login</h2>
         </div>
-        <div class="parta">
-            <div class="text-container">
-                <h2>Login</h2>
-                <p>Enter your credentials to access your account.</p>
-                <form @submit.prevent="handleLogin">
-                    <div>
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" v-model="username" required>
-                    </div>
-                    
-                    <div>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" v-model="password" required>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="rememberMe" name="rememberMe">
-                        <label for="rememberMe">Remember me</label>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
+        <div class="bottom-content">
+          <p>Enter your credentials to access your account.</p>
+          <form @submit.prevent="handleLogin">
+            <label for="username">Username:</label>
+            <input type="text" id="username" v-model="username" required />
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" v-model="password" required />
+
+            <div class="remember-me">
+              <input type="checkbox" id="rememberMe" name="rememberMe" />
+              <label for="rememberMe">Remember me</label>
             </div>
-            <img :src="require('@/assets/img/pegassi_osiris.jpg')">
+
+            <button type="submit">Login</button>
+          </form>
         </div>
+      </div>
     </div>
+    <Footer />
+  </div>
 </template>
 
 <script>
+import Footer from "./Footer.vue";
 export default {
-    data() {
-        return {
-            username: '',
-            password: ''
-        };
+  data() {
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    handleLogin() {
+      console.log("Username:", this.username);
+      console.log("Password:", this.password);
     },
-    methods: {
-        handleLogin() {
-            // Handle login logic here
-            console.log('Username:', this.username);
-            console.log('Password:', this.password);
-        }
+    redirectToRoute(route) {
+      this.$router.push(route);
     }
+  },
+  components: {
+    Footer
+  }
 };
 </script>
 
-
-
 <style scoped>
-
-div {
-  background-color: #510A08;
-  border-bottom: #510A08;
-}
-
-.banner {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-}
-
-.banner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: blur(5px); 
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.banner h1, .banner p {
-  position: absolute;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
-}
-
-img :hover {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-}
-
-.banner h1 {
-  font-size: 48px;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
-
-.banner p {
-  font-size: 24px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
+body {
+  font-family: Arial, sans-serif;
+  color: #fff;
 }
 
-
-.title {
-  font-size: 24px;
-  top: 50%;
-  left: 50%;
-  margin: 0;
-  color: white;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-}
-
-.parta {
+.login-wrapper {
+  background: linear-gradient(135deg, #48130e, #320505);
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  max-width: 1200px;
-  margin: auto;
-  gap: 20px;
+  flex-direction: column;
+  padding-top: 100px;
+  gap: 100px;
 }
 
-#rd {
-  max-width: 40%;
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Group h2 and p inside the text-container */
-.text-container {
-  flex: 1;
-  padding-right: 20px;
-}
-
-/* Style a box around the text container*/
-.text-container {
+.content {
   background-color: #320505;
-  padding: 40px;
-  border-radius: 8px;
-  border-width: 4px;
-  border-color: #a30000;
+  border: 3px solid #8b0000;
+  border-radius: 20px;
+  padding: 2rem;
+  width: 100%;
+  color: #ffffff;
+  animation: fadeIn 0.7s ease-out;
+  transition: box-shadow 0.3s;
 }
 
-.text-container form{
+.content:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.top-content {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo {
+  width: 50%;
+  height: auto;
+  margin-bottom: 1rem;
+  transition: transform 0.3s;
+
+}
+
+.logo:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+h2 {
+  color: #ff4500;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.bottom-content {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background-color: #320505;
+  gap: 1rem;
+}
+
+p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  font-size: 0.9rem;
+  color: #ff4500;
+}
+
+input[type="text"],
+input[type="password"] {
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 2px solid #8b0000;
+  background-color: #1e1e1e;
   color: #ffffff;
-  padding: 20px; 
-  border-radius: 8px; 
-  outline: 3px solid #ae0000;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
-.text-container form > div {
-  background-color: #320505; 
-  padding: 10px;
-  border-radius: 4px;
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #ff4500;
+  box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+  outline: none;
 }
 
-.text-container h2 {
-  font-size: 2rem;
-  color: white;
-  margin-bottom: 10px;
+.remember-me {
+  display: flex;
+  align-items: center;
 }
 
-.text-container p {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: white;
+.remember-me input {
+  margin-right: 0.5rem;
 }
 
-.parta img {
-  max-width: 60%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  flex: 0 1 400px;
-  transition: box-shadow 0.3s ease-in-out; /* Transition added for smooth hover effect */
+button {
+  background: linear-gradient(135deg, #ff4500, #8b0000);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem;
+  cursor: pointer;
+  font-size: 1rem;
 }
 
-.parta h2{
-  color:#ab0000
-}
-.parta img:hover {
-  box-shadow: 0 30px 30px rgba(0, 0, 0, 0.4); /* Shadow effect on hover */
+button:hover {
+  background: linear-gradient(135deg, #ff5733, #a00000);
 }
 
-@media (max-width: 768px) {
-  .parta {
-    flex-direction: column;
-    text-align: center;
+button:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-
-  .parta img {
-    margin-top: 20px;
-  }
-
-  .text-container {
-    padding-right: 0;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-
-
 </style>
