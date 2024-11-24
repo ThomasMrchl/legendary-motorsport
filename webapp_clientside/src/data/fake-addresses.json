@@ -1,0 +1,37 @@
+[
+    {
+      "id_adress": 1,
+      "country": "France",
+      "postal_code": 75001,
+      "street": "Rue de Rivoli",
+      "street_number": 1
+    },
+    {
+      "id_adress": 2,
+      "country": "United States",
+      "postal_code": 10001,
+      "street": "5th Avenue",
+      "street_number": 350
+    },
+    {
+      "id_adress": 3,
+      "country": "Germany",
+      "postal_code": 10115,
+      "street": "Friedrichstrabe",
+      "street_number": 200
+    },
+    {
+      "id_adress": 4,
+      "country": "Japan",
+      "postal_code": 1000001,
+      "street": "Chiyoda",
+      "street_number": 10
+    },
+    {
+      "id_adress": 5,
+      "country": "Brazil",
+      "postal_code": 12000,
+      "street": "Avenida Paulista",
+      "street_number": 1578
+    }
+]  
