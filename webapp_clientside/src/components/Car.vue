@@ -63,7 +63,7 @@ export default {
       <!-- Car Details -->
       <div class="car-content">
         <h2 class="car-title">{{ car.brand }} - {{ car.model }}</h2>
-        <p class="car-price">💰 <strong>${{ car.latest_price.toLocaleString() }}</strong></p>
+        <p class="car-price">💰 <strong>${{ car.first_price.toLocaleString() }}</strong></p>
         <p class="car-description">
           {{ car.description || "An amazing car with stunning features, perfect for anyone looking for performance and style." }}
         </p>
@@ -72,6 +72,8 @@ export default {
         <div class="car-details">
           <p><strong>Color:</strong> {{ car.color }}</p>
           <p><strong>Status:</strong> {{ car.status }}</p>
+          <p><strong>Mileage:</strong> {{ car.mileage }}</p>
+          <p><strong>Engine:</strong> {{ car.engine }}</p>
           <p><strong>Horsepower:</strong> {{ car.horsepower }} HP</p>
         </div>
 
@@ -83,6 +85,7 @@ export default {
           <RouterLink :to="`/modify/car/${id}`">
             <button class="info-button">Modify</button>
           </RouterLink>
+          <button class="delete-button">Delete</button>
         </div>
       </div>
     </div>
@@ -91,20 +94,20 @@ export default {
 
 <style scoped>
 
-.card-wrapper {
+.car-wrapper {
   background-color: #240102;
-
+  padding-top: 50px;
 }
 
 .car-card {
+  flex-direction: column;
   border: 5px solid #8C110F;
   display: flex;
-  flex-direction: column;
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   max-width: 400px;
-  margin: 1rem auto;
+  margin: 0 auto;
   background-color: #48130E;
   color: white;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -170,7 +173,7 @@ export default {
 .car-actions {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .buy-button,
@@ -182,6 +185,18 @@ export default {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.delete-button {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #ae3727;
+  color: #fff;
 }
 
 .buy-button {
