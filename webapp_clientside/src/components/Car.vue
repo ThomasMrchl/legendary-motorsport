@@ -36,6 +36,31 @@ export default {
         this.isLoading = false;
       }
     },
+    async deleteCar() {
+      if (!confirm("Are you sure you want to delete this car?")) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3000/car/deleteCar/${this.id}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          alert("Car successfully deleted!");
+          this.redirectToRoute('/catalog');
+        } else {
+          console.error("Failed to delete car", response.statusText);
+          alert("Failed to delete the car. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error deleting car:", error);
+        alert("An error occurred while deleting the car.");
+      }
+    },
     redirectToRoute(route) {
       this.$router.push(route);
     },
@@ -48,8 +73,6 @@ export default {
 </script>
 
 <template>
-  <div v-if="isLoading" class="loading">Loading car details...</div>
-  <div v-else-if="error" class="error">{{ error }}</div>
   <div v-else-if="car" class="car-wrapper">
     <div class="car-card">
       <div class="car-image-wrapper">
@@ -85,7 +108,7 @@ export default {
           <RouterLink :to="`/modify/car/${id}`">
             <button class="info-button">Modify</button>
           </RouterLink>
-          <button class="delete-button">Delete</button>
+          <button class="delete-button" @click="deleteCar">Delete</button>
         </div>
       </div>
     </div>
