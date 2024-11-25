@@ -85,7 +85,7 @@ export default {
                 <button>2 DOOR</button>
                 <button>4 DOOR</button>
                 <button>MOTORCYCLES</button>
-                <button>SPECIALE</button>
+                <button @click="redirectToRoute('/create/car')">ADD A CAR</button>
               </div>
               <div class="car-list">
                 <CarCard
