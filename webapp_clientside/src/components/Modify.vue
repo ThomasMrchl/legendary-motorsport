@@ -15,62 +15,80 @@
           </div>
           <div class="bottom-content" v-if="table === 'car'">
             <p>Please enter the informations of the car.</p>
-            <form v-for="car in carlist" v-if="car.id == modificationid">
+            <form>
                 <label for="Franchise">Franchise:</label>
                 <select id="franchise-selection" required>
-                    <option v-for="franchise in franchiselist" v-if="franchise.franchise_id == car.franchise" :value="car.franchise">{{ franchise.franchise_name }}</option>
-                    <option
-                    v-for="franchise in franchiselist" v-if="franchise.franchise_id != car.franchise"
-                    :value="franchise.franchise_id">{{ franchise.franchise_name }}</option>
+                  <option
+                    v-for="franchise in franchiselist" 
+                    :value="franchise.franchise_id" 
+                    :selected="franchise.franchise_id === carfranchise">
+                    {{ franchise.franchise_name }}
+                  </option>
                 </select>
 
                 <label for="Status">Status:</label>
-                <select id="status-selection" required>
-                    <option v-if="car.status === 'available'" value="available">Available</option>
-                    <option v-if="car.status === 'sold'" value="sold">Sold</option>
+                <select id="status-selection" v-model="selectedStatus" required>
+                  <option
+                    v-for="status in ['sold', 'available']" 
+                    :value="status" 
+                    :selected="status === carstatus">
+                    {{ status.charAt(0).toUpperCase() + status.slice(1) }}
+                  </option>
                 </select>
+
+                <label for="color">Color:</label>
+                <input type="text" :value="carcolor" id="color" required />
+
+                <label for="Mileage">Mileage:</label>
+                <input type="number" :value=carmileage id="mileage" min="0" required />
 
                 <label for="Condition">Condition:</label>
                 <select id="condition-selection" required>
-                    <option v-if="car.condition" value="new">New</option>
-                    <option value="used">Used</option>
-                </select>
-
-                <label for="Mileage">Mileage:</label>
-                <input type="number" value="2000" id="mileage" min="0" required />
-
-                <label for="Color">Color:</label>
-                <input type="text" placeholder="Red" id="color" required />  
+                  <option
+                    v-for="cond in ['used', 'new']" 
+                    :value="cond" 
+                    :selected="cond === carcondition">
+                    {{ cond.charAt(0).toUpperCase() + cond.slice(1) }}
+                  </option>
+                </select>  
 
                 <div id="prices">
                     <label for="buyout">Buyout Price:</label>
-                    <input type="number" placeholder="40000" id="buyout" min="0" required />
+                    <input type="number" :value="carbuyout" id="buyout" min="0" required />
                     <label for="first">First Price:</label>
-                    <input type="number" placeholder="50000" id="first" min="0" required />
+                    <input type="number" :value="carfirst" id="first" min="0" required />
                 </div>
 
+                <label v-if="selectedStatus === 'sold'" for="Buyer">Buyer:</label>
+                <select v-if="selectedStatus === 'sold'" id="buyer-selection" required>
+                  <option
+                    v-for="user in userlist" 
+                    :value="user.id_user" 
+                    :selected="user.id_user === carbuyer">
+                    {{ user.first_name + " " + user.last_name }}
+                  </option>
+                </select>
+
                 <label for="Brand">Brand:</label>
-                <input type="text" placeholder="Chevrolet" id="brand" required />
+                <input type="text" :value="carbrand" id="brand" required />
 
                 <label for="Model">Model:</label>
-                <input type="text" placeholder="Corvette" id="model" required />
+                <input type="text" :value="carmodel" id="model" required />
 
                 <label for="Engine Type">Engine Type:</label>
                 <select id="enginetype-selection" required>
-                    <option value="">-- Please choose an engine type --</option>
-                    <option value="electric">Electric</option>
-                    <option value="V2">V2</option>
-                    <option value="V4">V4</option>
-                    <option value="V6">V6</option>
-                    <option value="V8">V8</option>
-                    <option value="V10">V10</option>
-                    <option value="V12">V12</option>
+                  <option
+                    v-for="engine in ['electric', 'V2', 'V4', 'V6', 'V8', 'V10', 'V12']" 
+                    :value="engine" 
+                    :selected="engine === carengine">
+                    {{ engine.charAt(0).toUpperCase() + engine.slice(1) }}
+                  </option>
                 </select>
 
                 <label for="Horsepower">Horsepower:</label>
-                <input type="number" placeholder="495" id="horsepower" min="0" required />
+                <input type="number" :value="carhorsepower" id="horsepower" min="0" required />
 
-                <button type="submit">Create</button>
+                <button type="submit">Modify</button>
             </form>
           </div>
           <div class="bottom-content" v-if="table === 'user'">
@@ -175,7 +193,22 @@
             addresslist,
             isEmployee: false,
             userlist,
-            carlist
+            carlist,
+            carid: 1,
+            carfranchise: 2,
+            carstatus: "sold",
+            carcolor: "Green",
+            carmileage: 20000,
+            carcondition: "new",
+            carbuyout: 10000,
+            carfirst: 14000,
+            carbuyer: 3,
+            carmodel: "Kangoo",
+            carbrand: "Renault",
+            carengine: "V2",
+            carhorsepower: 100,
+            carfo: null,
+            selectedStatus: 'sold'
         }
     },
     methods: {
@@ -187,8 +220,7 @@
       Footer
     },
     props: {
-        table: String,
-        modificationid: Number
+        table: String
     }
   };
   </script>
