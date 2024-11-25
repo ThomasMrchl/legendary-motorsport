@@ -2,23 +2,24 @@
 export default {
   name: 'CarCard',
   props: {
+    id: Number,
+    franchise_id: Number,
+    mileage: Number,
+    condition: String,
+    engine: String,
     model: String,
     brand: String,
     price: Number,
     color: String,
     status: String,
     horsepower: Number
-  },
-  methods: {
-    redirectToRoute(route) {
-      this.$router.push(route);
-    }
   }
 }
 </script>
 
 <template>
-  <div class="car-card" @click="redirectToRoute('/login')">
+  <div class="car-card">
+    <RouterLink :to="`/car/${id}`">
     <div class="top-banner">
       <p>DEALERSHIP NAME</p>
     </div>
@@ -29,6 +30,7 @@ export default {
       <p>{{ brand }} {{ model }}</p>
       <button>${{price}}</button>
     </div>
+    </RouterLink>
   </div>
 </template>
 
@@ -52,7 +54,7 @@ export default {
 .car-card {
   display: flex;
   flex-direction: column;
-  
+
   &:hover{
     cursor: pointer;
   }
