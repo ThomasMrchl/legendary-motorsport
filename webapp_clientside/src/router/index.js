@@ -5,6 +5,7 @@ import Catalog from "@/components/Catalog.vue";
 import Login from '../components/Login.vue';
 import Create from '../components/Create.vue';
 import Modify from '../components/Modify.vue';
+import Error from '../components/404.vue'
 
 
 Vue.use(Router)
@@ -36,10 +37,15 @@ export default new Router({
       props: true
     },
     {
-      path: '/modify/:table/:modificationid',
+      path: '/modify/:table',
       name: 'modify',
       component: Modify,
       props: true
+    },
+    {
+      path: '*',
+      name: 'notFound',
+      component: Error
     }
   ]
 })
