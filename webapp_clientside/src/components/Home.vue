@@ -20,7 +20,7 @@
             <section class="text-container">
               <div class="title">LUXURY CARS JUST FOR YOU !</div>
               <p>Are you looking for a safe, eco-friendly, fuel-efficient car that's practical for getting around town? <span class="red">You're on the wrong website</span>. Are you looking to have them dripping as you pass by? Welcome! You're in a safe place. </p>
-              <a href="/catalog/2"><button>CATALOG</button></a>
+              <a href="/catalog"><button>CATALOG</button></a>
             </section>
             <img :src="require('@/assets/img/gta5garage.png')" alt="Image of a Garage with cars">
           </section>

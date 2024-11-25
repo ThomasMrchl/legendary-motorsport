@@ -1,27 +1,48 @@
 <script>
-import carsData from '../data/fake-cars.json';
-import usersData from '../data/fake-users.json';
-import francesData from '../data/fake-franchises.json';
 import CarCard from "./CarCard.vue";
 import Footer from "./Footer.vue";
 
 export default {
-  name: 'Catalog',
+  name: "Catalog",
   components: {
     CarCard,
-    Footer
+    Footer,
   },
   data() {
     return {
-      cars: carsData
+      cars: [],
+      isLoading: false,
+      error: null,
     };
   },
   methods: {
+    async fetchCars() {
+      try {
+        const response = await fetch("http://localhost:3000/car/getAllCars", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.cars = data.allCars;
+          console.log(this.cars);
+        } else {
+          console.error("Failed to fetch cars", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching cars:", error);
+      }
+    },
     redirectToRoute(route) {
       this.$router.push(route);
-    }
-  }
-}
+    },
+  },
+  mounted() {
+    this.fetchCars();
+  },
+};
 </script>
 
 <template>
@@ -29,28 +50,36 @@ export default {
     <div class="catalog-container">
       <div class="main-banner">
         <div class="banner">
-          <div class="banner-content">
-
-          </div>
+          <div class="banner-content"></div>
           <div class="banner-image">
-            <img src="../assets/img/LegendaryBanner.png" alt="Banner Image">
+            <img src="../assets/img/LegendaryBanner.png" alt="Banner Image" />
           </div>
         </div>
       </div>
       <div class="content-wrapper">
         <div class="content-container">
           <div class="content-title" @click="redirectToRoute('/')">
-            <img src="../assets/img/LegendaryLogo.png" style="width: 400px;" alt="Legendary Logo">
+            <img
+              src="../assets/img/LegendaryLogo.png"
+              style="width: 400px;"
+              alt="Legendary Logo"
+            />
             <div class="content-title-text">
               <div class="title">CHOOSE FROM OUR TOP END</div>
-              <div class="subtitle">HIGH PERFORMANCE CARS AT GREAT PRICES</div>
+              <div class="subtitle">
+                HIGH PERFORMANCE CARS AT GREAT PRICES
+              </div>
             </div>
           </div>
           <div class="content-sort-button">
-              <div class="sort-button" @click="redirectToRoute('/login')">LOGIN OR SIGN UP NOW !</div>
+            <div class="sort-button" @click="redirectToRoute('/login')">
+              LOGIN OR SIGN UP NOW !
+            </div>
           </div>
           <div class="grid-wrapper">
-            <div class="grid-container">
+            <div v-if="isLoading" class="loading">Loading cars...</div>
+            <div v-if="error" class="error">{{ error }}</div>
+            <div v-else class="grid-container">
               <div class="buttons">
                 <button>FEATURED</button>
                 <button>2 DOOR</button>
@@ -61,22 +90,16 @@ export default {
               <div class="car-list">
                 <CarCard
                   v-for="car in cars"
-                  :key="car.id"
-                  :model="car.model"
-                  :brand="car.brand"
-                  :price="car.latest_price"
-                  :color="car.color"
-                  :status="car.status"
-                  :horsepower="car.horsepower"
+                  :key="car.id_car"
+                  :id="car.id_car"
+                  v-bind="car"
                 />
-              </div>
-
               </div>
             </div>
           </div>
         </div>
       </div>
-    <Footer />
+      <Footer />
     </div>
   </div>
 </template>

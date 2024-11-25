@@ -1,12 +1,28 @@
 const dotenv = require('dotenv');
 dotenv.config();
+const pool = require('./databases/db');
 
 const express = require('express');
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+//Test database connection
+const testDatabaseConnection = async () => {
+    try {
+        const [rows] = await pool.query('SELECT 1');
+        console.log('Database connection successful! Test query result:', rows);
+    } catch (err) {
+        console.error('Error testing database connection:', err.message);
+    }
+};
+
+// Call the function to test connection
+testDatabaseConnection()
+
 app.set("view engine", "ejs");
 app.set("views", "views");
-app.listen(process.env.WEB_PORT, '0.0.0.0',
-    function() { console.log("Listening on "+process.env.WEB_PORT); }
+app.listen(PORT, '0.0.0.0',
+    function() { console.log("Listening on "+PORT); }
 );
 
 const carRoutes = require('./routes/car');
@@ -35,10 +51,9 @@ app.get('/', (request, response) => { // 'GET' as a HTTP VERB, not as a 'getter'
     response.end(); // optional
 });
 
-// app.use('/car', carRoutes);
+app.use('/car', carRoutes);
 
 // setup additional routes
 // app.use(routeBase, callback);
 app.use("/static", express.static(__dirname + '/static'));
-//app.use("/carsapi", require("./controllers/carsapi.route"));
 // app.use("/auth", require("./controllers/auth.route"));
