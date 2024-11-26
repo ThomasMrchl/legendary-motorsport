@@ -36,10 +36,10 @@
                 </select>
 
                 <label for="color">Color:</label>
-                <input type="text" :value="carcolor" id="color" required />
+                <input type="text" v-model="carcolor" id="color" required />
 
                 <label for="Mileage">Mileage:</label>
-                <input type="number" :value=carmileage id="mileage" min="0" required />
+                <input type="number" v-model="carmileage" id="mileage" min="0" required />
 
                 <label for="Condition">Condition:</label>
                 <select id="condition-selection" v-model="carcondition" required>
@@ -52,13 +52,13 @@
 
                 <div id="prices">
                     <label for="buyout">Buyout Price:</label>
-                    <input type="number" :value="carbuyout" id="buyout" min="0" required />
+                    <input type="number" v-model="carbuyout" id="buyout" min="0" required />
                     <label for="first">First Price:</label>
-                    <input type="number" :value="carfirst" id="first" min="0" required />
+                    <input type="number" v-model="carfirst" id="first" min="0" required />
                 </div>
 
                 <label v-if="selectedStatus === 'sold'" for="Buyer">Buyer:</label>
-                <select v-if="selectedStatus === 'sold'" id="buyer-selection" required>
+                <select v-if="selectedStatus === 'sold'" id="buyer-selection" v-model="carbuyer" required>
                   <option
                     v-for="user in userlist" 
                     :value="user.id_user" 
@@ -68,10 +68,10 @@
                 </select>
 
                 <label for="Brand">Brand:</label>
-                <input type="text" :value="carbrand" id="brand" required />
+                <input type="text" v-model="carbrand" id="brand" required />
 
                 <label for="Model">Model:</label>
-                <input type="text" :value="carmodel" id="model" required />
+                <input type="text" v-model="carmodel" id="model" required />
 
                 <label for="Engine Type">Engine Type:</label>
                 <select id="enginetype-selection" v-model="carengine" required>
@@ -129,7 +129,6 @@
     async created() {
       this.isLoading = true;
       try {
-        console.log('Car ID:', this.carid);
         const response = await fetch(`http://localhost:3000/car/getCarById/${this.carid}`, {
           method: "GET",
           headers: {
@@ -139,18 +138,18 @@
         if (response.ok) {
           const data = await response.json();
           const car = data.carById[0];
-          this.carfranchise = car.franchise_id;
+          this.carfranchise = car.franchise;
           this.selectedStatus = car.status;
           this.carcolor = car.color;
           this.carmileage = car.mileage;
-          this.carcondition = car.condition;
+          this.carcondition = car.conditions;
           this.carbuyout = car.buyout_price;
           this.carfirst = car.first_price;
-          this.carbuyer = car.buyer_id;
+          this.carbuyer = car.buyer;
           this.carmodel = car.model;
           this.carbrand = car.brand;
-          this.carengine = car.engine_type;
-          this.carhorsepower = car.horse_power;
+          this.carengine = car.engine;
+          this.carhorsepower = car.horsepower;
         } else {
           console.error("Failed to fetch car", response.statusText);
           this.error = "Failed to fetch car.";

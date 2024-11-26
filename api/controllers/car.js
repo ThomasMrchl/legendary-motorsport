@@ -23,9 +23,10 @@ exports.getCarById = async (req, res) => {
 
         const [carById] = await pool.query('SELECT * FROM car WHERE id_car = ?', [req.params.id]);
         if (carById.length !== 1) {
+            
             return res.status(404).send({'message': 'Car with id not found.'});
         }
-
+        console.log(carById);
         return res.status(200).json({carById});
 
     } catch (err) {
@@ -53,18 +54,18 @@ exports.updateCar = async (req, res) => {
             brand,
             engine_type,
             horse_power,
-            buyer_id, // Added for handling the buyer if sold
+            buyer_id, 
             id_car,
         } = req.body;
         console.log(req.body);
-        // List of required fields for validation
+        // List of required fields
         const requiredFields = [
-            'franchise_id', 'status', 'color', 'mileage', 'conditions',
+            'id_car', 'franchise_id', 'status', 'color', 'mileage', 'conditions',
             'buyout_price', 'first_price', 'latest_price', 'model', 'brand',
-            'engine_type', 'horse_power','id_car'
+            'engine_type', 'horse_power'
         ];
 
-        // Check for any missing fields
+        // Check for missing fields
         const missingFields = requiredFields.filter(field => req.body[field] === undefined || req.body[field] === null || req.body[field] === '');
         if (missingFields.length > 0) {
             return res.status(400).json({
@@ -72,7 +73,6 @@ exports.updateCar = async (req, res) => {
             });
         }
 
-        // Add buyer_id in case of sold status
         const queryParams = [
             franchise_id,
             status,
@@ -91,7 +91,7 @@ exports.updateCar = async (req, res) => {
 
         let querySQL = '';
 
-        // If car is sold, include buyer_id
+        // If car  sold, include buyer_id
         if (status === 'sold' && buyer_id) {
             querySQL = `
                 UPDATE car
@@ -113,7 +113,7 @@ exports.updateCar = async (req, res) => {
             `;
 
             queryParams.push(buyer_id);
-            queryParams.push(id_car); // ID is always the last parameter
+            queryParams.push(id_car); 
         } else {
             querySQL = `
                 UPDATE car
@@ -136,17 +136,16 @@ exports.updateCar = async (req, res) => {
             queryParams.push(id_car);
         }
 
-        // Execute the query with the provided data
         const [result] = await pool.query(querySQL, queryParams);
 
-        // Check if any rows were affected (i.e., if the car exists and was updated)
+        // Check if car was updated
         if (result.affectedRows === 0) {
             return res.status(404).json({
                 message: `Car with ID ${id_car} not found`
             });
         }
 
-        // Send a success response
+        // Send success response
         res.status(200).json({
             message: 'Car updated successfully!',
             carId: id_car
