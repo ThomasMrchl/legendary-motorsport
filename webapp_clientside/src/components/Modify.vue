@@ -19,7 +19,7 @@
                 <label for="Franchise">Franchise:</label>
                 <select id="franchise-selection" v-model="carfranchise" required>
                   <option
-                    v-for="franchise in franchiselist" 
+                    v-for="franchise in franchiselist"
                     :value="franchise.franchise_id">
                     {{ franchise.franchise_name }}
                   </option>
@@ -28,8 +28,8 @@
                 <label for="Status">Status:</label>
                 <select id="status-selection" v-model="selectedStatus" required>
                   <option
-                    v-for="status in ['sold', 'available']" 
-                    :value="status" 
+                    v-for="status in ['sold', 'available']"
+                    :value="status"
                     :selected="status === carstatus">
                     {{ status.charAt(0).toUpperCase() + status.slice(1) }}
                   </option>
@@ -60,8 +60,8 @@
                 <label v-if="selectedStatus === 'sold'" for="Buyer">Buyer:</label>
                 <select v-if="selectedStatus === 'sold'" id="buyer-selection" v-model="carbuyer" required>
                   <option
-                    v-for="user in userlist" 
-                    :value="user.id_user" 
+                    v-for="user in userlist"
+                    :value="user.id_user"
                     :selected="user.id_user === carbuyer">
                     {{ user.first_name + " " + user.last_name }}
                   </option>
@@ -76,7 +76,7 @@
                 <label for="Engine Type">Engine Type:</label>
                 <select id="enginetype-selection" v-model="carengine" required>
                   <option
-                    v-for="engine in ['electric', 'V2', 'V4', 'V6', 'V8', 'V10', 'V12']" 
+                    v-for="engine in ['electric', 'V2', 'V4', 'V6', 'V8', 'V10', 'V12']"
                     :value="engine">
                     {{ engine.charAt(0).toUpperCase() + engine.slice(1) }}
                   </option>
@@ -84,7 +84,7 @@
 
                 <label for="Horsepower">Horsepower:</label>
                 <input type="number" v-model="carhorsepower" id="horsepower" min="0" required />
- 
+
 
                 <button type="submit">Modify</button>
             </form>
@@ -94,7 +94,7 @@
       <Footer />
     </div>
   </template>
-  
+
   <script>
   import Footer from "./Footer.vue";
   import franchiselist from "../data/fake-franchises.json";
@@ -211,6 +211,7 @@
                 if (response.ok) {
                     const data = await response.json();
                     console.log('Car updated successfully', data);
+                    this.redirectToRoute('/catalog');
                 } else {
                     console.error('Error updating car: ', response.statusText);
                     const errorData = await response.json();
@@ -230,19 +231,19 @@
 };
 
   </script>
-  
+
   <style scoped>
   * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
   }
-  
+
   body {
     font-family: Arial, sans-serif;
     color: #fff;
   }
-  
+
   .create-wrapper {
     background: linear-gradient(135deg, #48130e, #320505);
     display: flex;
@@ -252,7 +253,7 @@
     padding-top: 100px;
     gap: 100px;
   }
-  
+
   .create-container {
     display: flex;
     justify-content: center;
@@ -263,7 +264,7 @@
     border-radius: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   }
-  
+
   .content {
     background-color: #320505;
     border: 3px solid #8b0000;
@@ -279,57 +280,57 @@
     width: 25%;
     height: auto;
   }
-  
+
   .content:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
   }
-  
+
   .top-content {
     text-align: center;
     margin-bottom: 1.5rem;
   }
-  
+
   .logo {
     width: 50%;
     height: auto;
     margin-bottom: 1rem;
     transition: transform 0.3s;
-  
+
   }
-  
+
   .logo:hover {
     transform: scale(1.1);
     cursor: pointer;
   }
-  
+
   h2 {
     color: #ff4500;
     font-size: 1.8rem;
     margin-bottom: 1rem;
   }
-  
+
   .bottom-content {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   p {
     font-size: 0.95rem;
     opacity: 0.85;
   }
-  
+
   form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   label {
     font-size: 0.9rem;
     color: #ff4500;
   }
-  
+
   input[type="text"],
   input[type="number"],
   input[type="date"],
@@ -352,7 +353,7 @@
     color: #ffffff;
     transition: border 0.3s, box-shadow 0.3s;
   }
-  
+
   input[type="text"]:focus,
   input[type="number"]:focus,
   input[type="date"]:focus,
@@ -363,7 +364,7 @@
     box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
     outline: none;
   }
-  
+
   button {
     background: linear-gradient(135deg, #ff4500, #8b0000);
     color: #ffffff;
@@ -373,15 +374,15 @@
     cursor: pointer;
     font-size: 1rem;
   }
-  
+
   button:hover {
     background: linear-gradient(135deg, #ff5733, #a00000);
   }
-  
+
   button:active {
     transform: translateY(0);
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -393,4 +394,3 @@
     }
   }
   </style>
-  
