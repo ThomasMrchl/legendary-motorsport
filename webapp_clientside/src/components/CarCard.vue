@@ -1,9 +1,14 @@
 <script>
 export default {
   name: 'CarCard',
+  data () {
+    return {
+      franchise_name: ""
+    }
+  },
   props: {
     id: Number,
-    franchise_id: Number,
+    franchise: Number,
     mileage: Number,
     condition: String,
     engine: String,
@@ -13,15 +18,38 @@ export default {
     color: String,
     status: String,
     horsepower: Number
+  },
+  methods: {
+    async fetchFranchiseName(id) {
+      try {
+        const response = await fetch("http://localhost:3000/franchise/getFranchiseName/" + id, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.franchise_name = data.franchiseName;
+        } else {
+          console.error("Failed to fetch franchises", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching franchises:", error);
+      }
+    }
+  },
+  mounted() {
+    this.fetchFranchiseName(this.franchise);
   }
-}
+};
 </script>
 
 <template>
   <div class="car-card">
     <RouterLink :to="`/car/${id}`">
     <div class="top-banner">
-      <p>DEALERSHIP NAME</p>
+      <p>{{ franchise_name }}</p>
     </div>
     <div class="car-image">
       <img :src="require('@/assets/img/car.jpg')" :alt="`${brand} ${model}`" />

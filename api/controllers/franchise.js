@@ -15,6 +15,24 @@ exports.getAllFranchises = async (req, res) => {
     }
 };
 
+exports.getFranchiseName = async (req, res) => {
+    try {
+        const { id } = req.params;  // Get the franchise ID from the request parameters
+        const [franchise] = await pool.query('SELECT franchise_name FROM franchise WHERE id_franchise = ?', [id]);
+
+        if (franchise.length === 0) {
+            return res.status(404).send({ 'message': 'Franchise not found.' });
+        }
+
+        return res.status(200).send({ franchiseName: franchise[0].franchise_name });
+
+    } catch (err) {
+        console.error('Erreur lors de la requête :', err);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
 exports.getFranchiseList = async (req, res) => {
     try {
         const [allFranchises] = await pool.query('SELECT id_franchise, franchise_name FROM franchise');

@@ -20,7 +20,7 @@
                 <select id="franchise-selection" v-model="carfranchise" required>
                   <option
                     v-for="franchise in franchiselist"
-                    :value="franchise.franchise_id">
+                    :value="franchise.id_franchise">
                     {{ franchise.franchise_name }}
                   </option>
                 </select>
@@ -28,9 +28,8 @@
                 <label for="Status">Status:</label>
                 <select id="status-selection" v-model="selectedStatus" required>
                   <option
-                    v-for="status in ['sold', 'available']"
-                    :value="status"
-                    :selected="status === carstatus">
+                    v-for="status in ['Sold', 'Available']"
+                    :value="status">
                     {{ status.charAt(0).toUpperCase() + status.slice(1) }}
                   </option>
                 </select>
@@ -97,14 +96,13 @@
 
   <script>
   import Footer from "./Footer.vue";
-  import franchiselist from "../data/fake-franchises.json";
   import addresslist from "../data/fake-addresses.json";
   import userlist from "../data/fake-users.json";
   import carlist from "../data/fake-cars.json";
   export default {
     data() {
         return {
-            franchiselist: franchiselist,
+            franchiselist: [],
             addresslist: addresslist,
             isEmployee: false,
             userlist: userlist,
@@ -221,7 +219,29 @@
                 console.error('Error:', error);
             }
         },
+        async fetchFranchises() {
+          try {
+            const response = await fetch("http://localhost:3000/franchise/getFranchiseList", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            if (response.ok) {
+              const data = await response.json();
+              this.franchiselist = data.allFranchises;
+              console.log(this.franchiselist);
+            } else {
+              console.error("Failed to fetch franchises", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error fetching franchises:", error);
+          }
+        }
     },
+    mounted() {
+    this.fetchFranchises();
+  },
     components: {
         Footer,
     },
