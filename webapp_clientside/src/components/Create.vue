@@ -9,9 +9,7 @@
             :src="require('@/assets/img/LegendaryLogo2.png')"
             alt="Logo Legendary Motorsport"
           />
-          <h2 v-if="table === 'car'">Create a car</h2>
-          <h2 v-else-if="table === 'user'">Create a user</h2>
-          <h2 v-else-if="table === 'franchise'">Create a franchise</h2>
+          <h2>Create a car</h2>
         </div>
         <div class="bottom-content" v-if="table === 'car'">
           <p>Please enter the informations of the car.</p>
@@ -22,7 +20,7 @@
               <option
                 v-for="franchise in franchiselist"
                 :key="franchise.franchise_id"
-                :value="franchise.franchise_id">
+                :value="franchise.id_franchise">
                 {{ franchise.franchise_name }}
               </option>
             </select>

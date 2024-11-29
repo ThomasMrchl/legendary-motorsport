@@ -16,7 +16,6 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.createUser = async (req, res) => {
-
     try {
         const {
             first_name,
@@ -40,10 +39,19 @@ exports.createUser = async (req, res) => {
             });
         }
 
+        const emailCheckQuery = `SELECT id_user FROM user WHERE email = ? LIMIT 1`;
+        const [existingUser] = await pool.query(emailCheckQuery, [email]);
+
+        if (existingUser.length > 0) {
+            return res.status(400).json({
+                message: 'Email is already in use. Please use a different email.'
+            });
+        }
+
         const querySQL = `
             INSERT INTO user 
             (first_name, last_name, birth_date, address, email, password, is_employee, role, yearly_salary)
-            VALUES (?, ?, ?, 1, ?, sha2(?, 256), ?, ?, ?)
+            VALUES (?, ?, ?, 1, ?, ?, ?, ?, ?)
         `;
 
         const [result] = await pool.query(querySQL, [
@@ -56,7 +64,6 @@ exports.createUser = async (req, res) => {
             role,
             yearly_salary
         ]);
-
 
         res.status(201).json({
             message: 'User created successfully!',
@@ -71,6 +78,7 @@ exports.createUser = async (req, res) => {
         });
     }
 };
+
 
 exports.deleteUser = async (req, res) => {
     try {

@@ -14,7 +14,7 @@ export default {
     engine: String,
     model: String,
     brand: String,
-    price: Number,
+    first_price: Number,
     color: String,
     status: String,
     horsepower: Number
@@ -56,7 +56,7 @@ export default {
     </div>
     <div class="bottom-banner">
       <p>{{ brand }} {{ model }}</p>
-      <button>${{price}}</button>
+      <button>${{first_price}}</button>
     </div>
     </RouterLink>
   </div>
