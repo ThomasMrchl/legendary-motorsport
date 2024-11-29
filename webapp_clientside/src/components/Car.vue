@@ -73,7 +73,7 @@ export default {
 </script>
 
 <template>
-  <div v-else-if="car" class="car-wrapper">
+  <div class="car-wrapper">
     <div class="car-card">
       <div class="car-image-wrapper">
         <img

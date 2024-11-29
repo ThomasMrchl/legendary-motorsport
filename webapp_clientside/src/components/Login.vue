@@ -24,8 +24,11 @@
               <input type="checkbox" id="rememberMe" name="rememberMe" />
               <label for="rememberMe">Remember me</label>
             </div>
-
-            <button type="submit">Login</button>
+            
+            <div class="buttons">
+              <button type="submit">Login</button>
+              <button type="button" @click="redirectToRoute('/register')">Register</button>
+            </div>
           </form>
         </div>
       </div>
@@ -130,6 +133,11 @@ h2 {
   margin-bottom: 1rem;
 }
 
+.buttons {
+  display: flex;
+  justify-content: space-evenly
+}
+
 .bottom-content {
   display: flex;
   flex-direction: column;
@@ -186,6 +194,8 @@ button {
   padding: 0.75rem;
   cursor: pointer;
   font-size: 1rem;
+  width: 40%;
+  height: auto;
 }
 
 button:hover {

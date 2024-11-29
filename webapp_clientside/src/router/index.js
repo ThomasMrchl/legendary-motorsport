@@ -7,6 +7,7 @@ import Create from '../components/Create.vue';
 import Modify from '../components/Modify.vue';
 import Error from '../components/404.vue'
 import Car from "../components/Car.vue";
+import Register from '../components/Register.vue';
 
 
 Vue.use(Router)
@@ -50,9 +51,14 @@ export default new Router({
       props: true
     },
     {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    {
       path: '*',
       name: 'notFound',
       component: Error
-    }
+    },
   ]
 })

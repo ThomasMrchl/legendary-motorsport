@@ -82,11 +82,10 @@
 
 <script>
 import Footer from "./Footer.vue";
-import franchiselist from "../data/fake-franchises.json";
 export default {
   data() {
     return {
-      franchiselist,
+      franchiselist: [],
       isEmployee: false,
       car: {
         franchise_id: "",
@@ -137,7 +136,29 @@ export default {
         console.error("Error submitting car:", err);
         alert("Failed to create the car. Please try again later.");
       }
+    },
+    async fetchFranchises() {
+      try {
+        const response = await fetch("http://localhost:3000/franchise/getFranchiseList", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.franchiselist = data.allFranchises;
+          console.log(this.franchiselist);
+        } else {
+          console.error("Failed to fetch franchises", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching franchises:", error);
+      }
     }
+  },
+  mounted() {
+    this.fetchFranchises();
   }
 };
 </script>
