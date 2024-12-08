@@ -40,9 +40,10 @@ app.use(...bodyParserMiddlewares);
 app.use(sessionMiddleware);
 app.use(corsMiddleware);
 
-// configure passport
-// const auth = require("./utils/users.auth");
-// auth.initializeAuthentications(app);
+//configure passport
+const auth = require("./utils/users.auth"); // PASSPORT
+auth.initializeAuthentications(app); // PASSPORT
+app.use("/auth", require("./routes/auth")); // PASSPORT
 
 // *** ROUTES/CONTROLLERS ***
 

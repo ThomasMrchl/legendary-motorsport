@@ -8,6 +8,7 @@ import Modify from '../components/Modify.vue';
 import Error from '../components/404.vue'
 import Car from "../components/Car.vue";
 import Register from '../components/Register.vue';
+import AuthModule from "../components/AuthModule.vue";
 
 
 Vue.use(Router)
@@ -59,6 +60,11 @@ export default new Router({
       path: '*',
       name: 'notFound',
       component: Error
+    },
+    {
+      path: '/auth',
+      name: 'AuthenticationDemo',
+      component: AuthModule
     },
   ]
 })
