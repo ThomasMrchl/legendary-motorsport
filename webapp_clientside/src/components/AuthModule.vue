@@ -2,13 +2,8 @@
   <div class="hello">
     <h1 style="color: white">Authentication demo</h1>
     <p style="color: white">{{ msg }}</p>
-    <input type="button" @click="sendRequest('post', 'login', { username: 'joeuser', password: 'joeXXX' })" value="LOGIN BAD" />
     <input type="button" @click="sendRequest('post', 'login', { username: 'joeuser4', password: 'test' })" value="LOGIN USER" />
-    <input type="button" @click="sendRequest('post', 'login', { username: 'joeadmin', password: 'joepass' })" value="LOGIN ADMIN" />
     <input type="button" @click="sendRequest('post', 'register', { username: 'joeuser5', email: 'joe@gmail.com', password: 'test' })" value="REGISTER" />
-    <input type="button" @click="sendRequest('get', 'user')" value="ACCESS /user" />
-    <input type="button" @click="sendRequest('get', 'admin')" value="ACCESS /admin" />
-    <input type="button" @click="sendRequest('get', 'protected')" value="ACCESS /protected" />
     <input type="button" @click="sendRequest('get', 'logout')" value="LOGOUT" />
     <input type="button" @click="sendRequest('get', 'session-status')" value="CHECK SESSION STATUS" />
   </div>

@@ -1,3 +1,51 @@
+<script>
+import Footer from "./Footer.vue";
+
+export default {
+  data() {
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    async logIn() {
+      try {
+
+        const response = await this.$http.post(
+          "http://localhost:3000/auth/login",
+          {
+            username: this.username,
+            password: this.password,
+          },
+          {withCredentials: true}
+        );
+
+        console.log("Login successful:", response.data);
+        await this.$router.push("/catalog");
+
+      } catch (error) {
+        const errorMessage =
+          error &&
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+            ? error.response.data.message
+            : error.message || "An unknown error occurred.";
+        console.error("Login failed:", errorMessage);
+
+      }
+    },
+      redirectToRoute(route) {
+        this.$router.push(route);
+      }
+    },
+    components: {
+      Footer
+    }
+};
+</script>
+
 <template>
   <div class="login-wrapper">
     <div class="login-container">
@@ -13,7 +61,7 @@
         </div>
         <div class="bottom-content">
           <p>Enter your credentials to access your account.</p>
-          <form @submit.prevent="handleLogin">
+          <form @submit.prevent="logIn">
             <label for="username">Username:</label>
             <input type="text" id="username" v-model="username" required />
 
@@ -24,7 +72,7 @@
               <input type="checkbox" id="rememberMe" name="rememberMe" />
               <label for="rememberMe">Remember me</label>
             </div>
-            
+
             <div class="buttons">
               <button type="submit">Login</button>
               <button type="button" @click="redirectToRoute('/register')">Register</button>
@@ -36,30 +84,6 @@
     <Footer />
   </div>
 </template>
-
-<script>
-import Footer from "./Footer.vue";
-export default {
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    handleLogin() {
-      console.log("Username:", this.username);
-      console.log("Password:", this.password);
-    },
-    redirectToRoute(route) {
-      this.$router.push(route);
-    }
-  },
-  components: {
-    Footer
-  }
-};
-</script>
 
 <style scoped>
 * {

@@ -69,35 +69,38 @@ async function signupPostAction(req, res) {
         console.log('Sign Up process started ...');
         const {username, email, password} = req.body;
 
-        // Validate inputs
         if (!username || !email || !password) {
             return res.status(400).json({error: "All fields are required."});
         }
 
-        // Check if username already exists
         const existingUser = await userRepo.getOneUser(username);
         if (existingUser) {
             return res.status(409).json({error: "Username already exists."});
         }
 
-        // Create the user in the database
         const result = await userRepo.createUser(username, email, password);
 
         if (result) {
-            // After successful registration, automatically log the user in
-            const user = await userRepo.getOneUser(username);
-            req.login(user, function (err) {
-                if (err) {
-                    console.log("Error during login after signup:", err);
-                    return res.status(500).json({error: "Failed to log in after registration."});
-                }
-                // Send response indicating successful registration and login
-                let resultObject = {
-                    message: "User registered and logged in successfully.",
-                    timestamp: new Date().toLocaleString()
-                };
-                res.status(201).json(resultObject);  // Send success response with login information
-            });
+
+            let areValid = await userRepo.areValidCredentials(username, password);
+            console.log('credentialsAreValid: ' + areValid);
+
+            if (areValid) {
+                user = await userRepo.getOneUser(username);
+                req.login(user, function (err) {
+                    if (err) {
+                        console.log("LOGINERROR");
+                        console.log(err);
+                        areValid = false;
+                    }
+                    let resultObject = { "loginResult": areValid, "timestamp": new Date().toLocaleString() };
+                    res.send(JSON.stringify(resultObject));
+                });
+            } else {
+                let resultObject = { "loginResult": areValid, "timestamp": new Date().toLocaleString() };
+                res.send(JSON.stringify(resultObject));
+            }
+
         } else {
             res.status(500).json({error: "Failed to register user."});
         }
