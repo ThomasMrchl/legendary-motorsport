@@ -15,14 +15,9 @@
           <p>Please enter your informations.</p>
           <form @submit.prevent="submitRegister" id="form">
 
-            <label for="First Name">First Name:</label>
-            <input type="text" placeholder="Michael" id="firstname" v-model="user.first_name" required />
+            <label for="Username">Username:</label>
+            <input type="text" placeholder="Michael" id="firstname" v-model="user.username" required />
 
-            <label for="Last Name">Last Name:</label>
-            <input type="text" placeholder="De Santa" id="lastname" v-model="user.last_name" required />
-
-            <label for="Birthdate">Birthdate:</label>
-            <input type="date" id="bdate" v-model="user.birth_date" required />
 
             <label for="Email">Email:</label>
             <input type="email" placeholder="desanta.michael@eyefind.info" id="email" v-model="user.email" required />
@@ -41,19 +36,13 @@
 
 <script>
 import Footer from "./Footer.vue";
-const bcrypt = require('bcryptjs');
 export default {
   data() {
     return {
       user: {
-        first_name: "",
-        last_name: "",
-        birth_date: "",
+        username: "",
         email: "",
-        password: "",
-        is_employee: false,
-        role: "Customer",
-        yearly_salary: null
+        password: ""
       }
     };
   },
@@ -70,37 +59,36 @@ export default {
     async submitRegister() {
       try {
 
-        const salt = await bcrypt.genSalt(12);
-        const hashedPassword = await bcrypt.hash(this.user.password, salt);
+        const payload = {
+          username: this.user.username,
+          email: this.user.email,
+          password: this.user.password,
+        };
 
-        this.user.password = hashedPassword;
+        console.log("Payload being sent:", payload);
 
-        console.log("Payload being sent:", this.user);  
-        const response = await fetch("http://localhost:3000/user/createUser", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
+
+        const response = await this.$http.post(
+          "http://localhost:3000/auth/register",
+          {
+            username: this.user.username,
+            email: this.user.email,
+            password: this.user.password,
           },
-          body: JSON.stringify(this.user)
-        });
+          {withCredentials: true}
+        );
 
-        if (response.ok) {
-          const result = await response.json();
-          alert("You have successfully been registered !");
-          this.redirectToRoute("/catalog");
-        } else {
-          const error = await response.json();
-          alert(`Error: ${error.message}`);
-          this.user.password = ""
-        }
+        console.log(response);
+        this.redirectToRoute("/catalog");
+
       } catch (err) {
-        console.error("Error submitting your registration:", err);
-        console.log(JSON.stringify(this.user));
+
+        console.error("Error submitting registration:", err);
         alert("Failed to register. Please try again later.");
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
