@@ -7,17 +7,17 @@ export default {
     }
   },
   props: {
-    id: Number,
-    franchise: Number,
-    mileage: Number,
-    condition: String,
-    engine: String,
-    model: String,
-    brand: String,
-    first_price: Number,
-    color: String,
-    status: String,
-    horsepower: Number
+    car_id: Number,
+    car_franchise: Number,
+    car_mileage: Number,
+    car_condition: String,
+    car_engine: String,
+    car_model: String,
+    car_brand: String,
+    car_selling_price: Number,
+    car_color: String,
+    car_status: String,
+    car_horsepower: Number
   },
   methods: {
     async fetchFranchiseName(id) {
@@ -40,23 +40,23 @@ export default {
     }
   },
   mounted() {
-    this.fetchFranchiseName(this.franchise);
+    this.fetchFranchiseName(this.car_franchise);
   }
 };
 </script>
 
 <template>
   <div class="car-card">
-    <RouterLink :to="`/car/${id}`">
+    <RouterLink :to="`/car/${car_id}`">
     <div class="top-banner">
       <p>{{ franchise_name }}</p>
     </div>
     <div class="car-image">
-      <img :src="require('@/assets/img/car.jpg')" :alt="`${brand} ${model}`" />
+      <img :src="require('@/assets/img/car.jpg')" :alt="`${car_brand} ${car_model}`" />
     </div>
     <div class="bottom-banner">
-      <p>{{ brand }} {{ model }}</p>
-      <button>${{first_price}}</button>
+      <p>{{ car_brand }} {{ car_model }}</p>
+      <button>${{car_selling_price}}</button>
     </div>
     </RouterLink>
   </div>

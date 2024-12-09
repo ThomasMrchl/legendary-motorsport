@@ -17,8 +17,8 @@ exports.getAllFranchises = async (req, res) => {
 
 exports.getFranchiseName = async (req, res) => {
     try {
-        const { id } = req.params;  // Get the franchise ID from the request parameters
-        const [franchise] = await pool.query('SELECT franchise_name FROM franchise WHERE id_franchise = ?', [id]);
+        const { id } = req.params;
+        const [franchise] = await pool.query('SELECT franchise_name FROM franchise WHERE franchise_id = ?', [id]);
 
         if (franchise.length === 0) {
             return res.status(404).send({ 'message': 'Franchise not found.' });
@@ -35,7 +35,7 @@ exports.getFranchiseName = async (req, res) => {
 
 exports.getFranchiseList = async (req, res) => {
     try {
-        const [allFranchises] = await pool.query('SELECT id_franchise, franchise_name FROM franchise');
+        const [allFranchises] = await pool.query('SELECT franchise_id, franchise_name FROM franchise');
 
         if (allFranchises.length === 0) {
             return res.status(404).send({ 'message': 'No franchise found.' });
@@ -58,7 +58,7 @@ exports.deleteFranchise = async (req, res) => {
             return res.status(400).json({ message: "Franchise ID is required" });
         }
 
-        const querySQL = `DELETE FROM franchise WHERE id_franchise = ?`;
+        const querySQL = `DELETE FROM franchise WHERE franchise_id = ?`;
 
         const [result] = await pool.query(querySQL, [id]);
 

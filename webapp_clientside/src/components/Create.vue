@@ -15,47 +15,46 @@
           <p>Please enter the informations of the car.</p>
           <form @submit.prevent="submitCar">
             <label for="Franchise">Franchise:</label>
-            <select id="franchise-selection" v-model="car.franchise_id" required>
+            <select id="franchise-selection" v-model="car.car_franchise" required>
               <option value="">-- Please choose a franchise --</option>
               <option
                 v-for="franchise in franchiselist"
                 :key="franchise.franchise_id"
-                :value="franchise.id_franchise">
+                :value="franchise.franchise_id">
                 {{ franchise.franchise_name }}
               </option>
             </select>
 
             <label for="Condition">Condition:</label>
-            <select id="condition-selection" v-model="car.conditions" required>
+            <select id="condition-selection" v-model="car.car_condition" required>
               <option value="">-- Please choose a condition --</option>
-              <option value="new">New</option>
-              <option value="used">Used</option>
+              <option value="Excellent">Excellent</option>
+              <option value="Very Good">Very Good</option>
+              <option value="Good">Good</option>
+              <option value="Fair">Fair</option>
             </select>
 
             <label for="Mileage">Mileage:</label>
-            <input type="number" placeholder="10000" id="mileage" v-model="car.mileage" min="0" required />
-
-            <label for="Status">Status:</label>
-            <input type="text" placeholder="Available" id="status" v-model="car.status" required />
+            <input type="number" placeholder="10000" id="mileage" v-model="car.car_mileage" min="0" required />
 
             <label for="Color">Color:</label>
-            <input type="text" placeholder="Red" id="color" v-model="car.color" required />
+            <input type="text" placeholder="Red" id="color" v-model="car.car_color" required />
 
             <div id="prices">
               <label for="buyout">Buyout Price:</label>
-              <input type="number" placeholder="40000" id="buyout" v-model="car.buyout_price" min="0" required />
-              <label for="first">First Price:</label>
-              <input type="number" placeholder="50000" id="first" v-model="car.first_price" min="0" required />
+              <input type="number" placeholder="40000" id="buyout" v-model="car.car_initial_price" min="0" required />
+              <label for="first">Selling Price:</label>
+              <input type="number" placeholder="50000" id="first" v-model="car.car_selling_price" min="0" required />
             </div>
 
             <label for="Brand">Brand:</label>
-            <input type="text" placeholder="Chevrolet" id="brand" v-model="car.brand" required />
+            <input type="text" placeholder="Chevrolet" id="brand" v-model="car.car_brand" required />
 
             <label for="Model">Model:</label>
-            <input type="text" placeholder="Corvette" id="model" v-model="car.model" required />
+            <input type="text" placeholder="Corvette" id="model" v-model="car.car_model" required />
 
             <label for="Engine Type">Engine Type:</label>
-            <select id="enginetype-selection" v-model="car.engine_type" required>
+            <select id="enginetype-selection" v-model="car.car_engine" required>
               <option value="">-- Please choose an engine type --</option>
               <option value="electric">Electric</option>
               <option value="V2">V2</option>
@@ -67,7 +66,7 @@
             </select>
 
             <label for="Horsepower">Horsepower:</label>
-            <input type="number" placeholder="495" id="horsepower" v-model="car.horse_power" min="0" required />
+            <input type="number" placeholder="495" id="horsepower" v-model="car.car_horsepower" min="0" required />
 
             <button type="submit">Create</button>
           </form>
@@ -86,18 +85,16 @@ export default {
       franchiselist: [],
       isEmployee: false,
       car: {
-        franchise_id: "",
-        conditions: "",
-        mileage: 0,
-        color: "",
-        buyout_price: 0,
-        first_price: 0,
-        latest_price: 0,
-        model: "",
-        brand: "",
-        status: "",
-        engine_type: "",
-        horse_power: 0
+        car_brand: "",
+        car_model: "",
+        car_horsepower: 0,
+        car_mileage: 0,
+        car_initial_price: 0,
+        car_selling_price: 0,
+        car_condition: "",
+        car_engine: "",
+        car_franchise: "",
+        car_color : ""
       }
     };
   },

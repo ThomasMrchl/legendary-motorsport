@@ -85,19 +85,19 @@ export default {
 
       <!-- Car Details -->
       <div class="car-content">
-        <h2 class="car-title">{{ car.brand }} - {{ car.model }}</h2>
-        <p class="car-price">💰 <strong>${{ car.first_price.toLocaleString() }}</strong></p>
+        <h2 class="car-title">{{ car.car_brand }} - {{ car.car_model }}</h2>
+        <p class="car-price">💰 <strong>${{ car.car_selling_price.toLocaleString() }}</strong></p>
         <p class="car-description">
           {{ car.description || "An amazing car with stunning features, perfect for anyone looking for performance and style." }}
         </p>
 
         <!-- Additional Details -->
         <div class="car-details">
-          <p><strong>Color:</strong> {{ car.color }}</p>
-          <p><strong>Status:</strong> {{ car.status }}</p>
-          <p><strong>Mileage:</strong> {{ car.mileage }}</p>
-          <p><strong>Engine:</strong> {{ car.engine }}</p>
-          <p><strong>Horsepower:</strong> {{ car.horsepower }} HP</p>
+          <p><strong>Color:</strong> {{ car.car_color }}</p>
+          <p><strong>Status:</strong> {{ car.car_status }}</p>
+          <p><strong>Mileage:</strong> {{ car.car_mileage }}</p>
+          <p><strong>Engine:</strong> {{ car.car_engine }}</p>
+          <p><strong>Horsepower:</strong> {{ car.car_horsepower }} HP</p>
         </div>
 
         <!-- Action Buttons -->

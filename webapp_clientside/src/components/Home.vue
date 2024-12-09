@@ -62,8 +62,6 @@
 import Footer from "./Footer.vue";
 import FranchiseCard from "./FranchiseCard.vue";
 import francesData from '../data/fake-franchises.json';
-import carsData from "../data/fake-cars.json";
-import usersData from "../data/fake-users.json";
 export default {
   name: 'Home',
   components: {
