@@ -22,6 +22,15 @@ async function checkAuthStatus() {
   }
 }
 
+async function checkAdmin() {
+  try {
+      const response = await axios.get('http://localhost:3000/auth/session-status', { withCredentials: true });
+      return (response.data.user.user_role == 'ADMIN');
+  } catch (err) {
+      return false;
+  }
+}
+
 Vue.use(Router)
 
 export default new Router({
@@ -56,7 +65,15 @@ export default new Router({
       path: '/create/:table',
       name: 'create',
       component: Create,
-      props: true
+      props: true,
+      beforeEnter: async (to, from, next) => {
+        const isAdmin = await checkAdmin();
+        if (isAdmin) {
+            next();
+        } else {
+            next('/');
+        }
+      }
     },
     {
       path: '/car/:id',
@@ -68,7 +85,15 @@ export default new Router({
       path: '/modify/:table/:id',
       name: 'modify',
       component: Modify,
-      props: true
+      props: true,
+      beforeEnter: async (to, from, next) => {
+        const isAdmin = await checkAdmin();
+        if (isAdmin) {
+            next();
+        } else {
+            next('/');
+        }
+      }
     },
     {
       path: '/register',

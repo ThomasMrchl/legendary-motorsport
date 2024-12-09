@@ -120,7 +120,6 @@ export default {
         });
 
         if (response.ok) {
-          const result = await response.json();
           alert("Car created successfully!");
           this.redirectToRoute("/catalog");
         } else {

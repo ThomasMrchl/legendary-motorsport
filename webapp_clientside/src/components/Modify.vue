@@ -9,24 +9,22 @@
               :src="require('@/assets/img/LegendaryLogo2.png')"
               alt="Logo Legendary Motorsport"
             />
-            <h2 v-if="table === 'car'">Modify a car</h2>
-            <h2 v-else-if="table === 'user'">Modify a user</h2>
-            <h2 v-else-if="table === 'franchise'">Modify a franchise</h2>
+            <h2>Modify a car</h2>
           </div>
           <div class="bottom-content" v-if="table === 'car'">
             <p>Please enter the informations of the car.</p>
             <form @submit.prevent="submitCarForm">
                 <label for="Franchise">Franchise:</label>
-                <select id="franchise-selection" v-model="carfranchise" required>
+                <select id="franchise-selection" v-model="car.car_franchise" required>
                   <option
                     v-for="franchise in franchiselist"
-                    :value="franchise.id_franchise">
+                    :value="franchise.franchise_id">
                     {{ franchise.franchise_name }}
                   </option>
                 </select>
 
                 <label for="Status">Status:</label>
-                <select id="status-selection" v-model="selectedStatus" required>
+                <select id="status-selection" v-model="car.car_status" required>
                   <option
                     v-for="status in ['Sold', 'Available']"
                     :value="status">
@@ -35,14 +33,14 @@
                 </select>
 
                 <label for="color">Color:</label>
-                <input type="text" v-model="carcolor" id="color" required />
+                <input type="text" v-model="car.car_color" id="color" required />
 
                 <label for="Mileage">Mileage:</label>
-                <input type="number" v-model="carmileage" id="mileage" min="0" required />
+                <input type="number" v-model="car.car_mileage" id="mileage" min="0" required />
 
                 <label for="Condition">Condition:</label>
-                <select id="condition-selection" v-model="carcondition" required>
-                  <option v-for="cond in ['used', 'new']" :value="cond" :selected="cond === carcondition">
+                <select id="condition-selection" v-model="car.car_condition" required>
+                  <option v-for="cond in ['Excellent', 'Very Good', 'Good', 'Fair']" :value="cond">
                     {{ cond.charAt(0).toUpperCase() + cond.slice(1) }}
                   </option>
                 </select>
@@ -51,29 +49,28 @@
 
                 <div id="prices">
                     <label for="buyout">Buyout Price:</label>
-                    <input type="number" v-model="carbuyout" id="buyout" min="0" required />
-                    <label for="first">First Price:</label>
-                    <input type="number" v-model="carfirst" id="first" min="0" required />
+                    <input type="number" v-model="car.car_initial_price" id="buyout" min="0" required />
+                    <label for="first">Selling Price:</label>
+                    <input type="number" v-model="car.car_selling_price" id="first" min="0" required />
                 </div>
 
-                <label v-if="selectedStatus === 'sold'" for="Buyer">Buyer:</label>
-                <select v-if="selectedStatus === 'sold'" id="buyer-selection" v-model="carbuyer" required>
+                <label v-if="car.car_status === 'Sold'" for="Buyer">Buyer:</label>
+                <select v-if="car.car_status === 'Sold'" id="buyer-selection" v-model="car.car_owner" required>
                   <option
                     v-for="user in userlist"
-                    :value="user.id_user"
-                    :selected="user.id_user === carbuyer">
-                    {{ user.first_name + " " + user.last_name }}
+                    :value="user.user_name">
+                    {{ user.user_name }}
                   </option>
                 </select>
 
                 <label for="Brand">Brand:</label>
-                <input type="text" v-model="carbrand" id="brand" required />
+                <input type="text" v-model="car.car_brand" id="brand" required />
 
                 <label for="Model">Model:</label>
-                <input type="text" v-model="carmodel" id="model" required />
+                <input type="text" v-model="car.car_model" id="model" required />
 
                 <label for="Engine Type">Engine Type:</label>
-                <select id="enginetype-selection" v-model="carengine" required>
+                <select id="enginetype-selection" v-model="car.car_engine" required>
                   <option
                     v-for="engine in ['electric', 'V2', 'V4', 'V6', 'V8', 'V10', 'V12']"
                     :value="engine">
@@ -82,7 +79,7 @@
                 </select>
 
                 <label for="Horsepower">Horsepower:</label>
-                <input type="number" v-model="carhorsepower" id="horsepower" min="0" required />
+                <input type="number" v-model="car.car_horsepower" id="horsepower" min="0" required />
 
 
                 <button type="submit">Modify</button>
@@ -96,62 +93,33 @@
 
   <script>
   import Footer from "./Footer.vue";
-  import addresslist from "../data/fake-addresses.json";
-  import userlist from "../data/fake-users.json";
-  import carlist from "../data/fake-cars.json";
+  const axios = require('axios');
   export default {
     data() {
         return {
             franchiselist: [],
-            addresslist: addresslist,
-            isEmployee: false,
-            userlist: userlist,
-            carlist: carlist,
-            carid: this.$route.params.id,
-            carfranchise: null,
-            carstatus: "",
-            carcolor: "",
-            carmileage: 0,
-            carcondition: "",
-            carbuyout: 0,
-            carfirst: 0,
-            carbuyer: null,
-            carmodel: "",
-            carbrand: "",
-            carengine: "",
-            carhorsepower: 0,
-            carfo: null,
-            selectedStatus: "",
+            userlist: [],
+            car: {
+              car_brand: "",
+              car_model: "",
+              car_horsepower: 0,
+              car_mileage: 0,
+              car_initial_price: 0,
+              car_selling_price: 0,
+              car_owner: null,
+              car_status: "",
+              car_condition: "",
+              car_engine: "",
+              car_franchise: 1,
+              car_color: ""
+            }
         };
     },
     async created() {
       this.isLoading = true;
       try {
-        const response = await fetch(`http://localhost:3000/car/getCarById/${this.carid}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          const car = data.carById[0];
-          this.carfranchise = car.franchise;
-          this.selectedStatus = car.status;
-          this.carcolor = car.color;
-          this.carmileage = car.mileage;
-          this.carcondition = car.conditions;
-          this.carbuyout = car.buyout_price;
-          this.carfirst = car.first_price;
-          this.carbuyer = car.buyer;
-          this.carmodel = car.model;
-          this.carbrand = car.brand;
-          this.carengine = car.engine;
-          this.carhorsepower = car.horsepower;
-        } else {
-          console.error("Failed to fetch car", response.statusText);
-          this.error = "Failed to fetch car.";
-        }
+        const response = await axios.get('http://localhost:3000/car/getCarById/' + this.id);
+        this.car = response.data.carById[0];
       } catch (error) {
         console.error("Error fetching car:", error);
         this.error = "An error occurred while fetching car details.";
@@ -164,61 +132,38 @@
             this.$router.push(route);
         },
         async submitCarForm() {
-            console.log('Form Data Before Sending:', {
-                franchise_id: this.carfranchise,
-                status: this.selectedStatus,
-                color: this.carcolor,
-                mileage: this.carmileage,
-                conditions: this.carcondition,
-                buyout_price: this.carbuyout,
-                first_price: this.carfirst,
-                latest_price: this.carfirst,
-                model: this.carmodel,
-                brand: this.carbrand,
-                engine_type: this.carengine,
-                horse_power: this.carhorsepower,
-                id_car: this.carid,
-            });
+          try {
+              if (!this.id) {
+                  alert("Car ID is missing!");
+                  return;
+              }
 
-            const carData = {
-                franchise_id: this.carfranchise,
-                status: this.selectedStatus,
-                color: this.carcolor,
-                mileage: this.carmileage,
-                conditions: this.carcondition,
-                buyout_price: this.carbuyout,
-                first_price: this.carfirst,
-                latest_price: this.carfirst,
-                model: this.carmodel,
-                brand: this.carbrand,
-                engine_type: this.carengine,
-                horse_power: this.carhorsepower,
-                id_car: this.carid,
-            };
-            console.log('Form Data:', carData);
-            try {
-                const response = await fetch(`http://localhost:3000/car/updateCar/${this.carid}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer YOUR_API_KEY', // Replace with your actual API key
-                    },
-                    body: JSON.stringify(carData),
-                });
+              console.log("Updating car with ID:", this.id);
+              console.log("Car data:", this.car);
 
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('Car updated successfully', data);
-                    this.redirectToRoute('/catalog');
-                } else {
-                    console.error('Error updating car: ', response.statusText);
-                    const errorData = await response.json();
-                    console.log('Error details: ', errorData);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        },
+              const response = await fetch(`http://localhost:3000/car/updateCar/${this.id}`, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(this.car)
+              });
+
+              if (response.ok) {
+                  const data = await response.json();
+                  console.log('Car updated successfully:', data);
+                  alert('Car updated successfully!');
+                  this.redirectToRoute('/catalog'); // Redirect to the catalog page
+              } else {
+                  console.error('Error updating car:', response.statusText);
+                  const errorData = await response.json();
+                  alert(`Error updating car: ${errorData.message}`);
+              }
+          } catch (error) {
+              console.error('Error:', error);
+              alert('An unexpected error occurred.');
+          }
+      },
         async fetchFranchises() {
           try {
             const response = await fetch("http://localhost:3000/franchise/getFranchiseList", {
@@ -230,23 +175,42 @@
             if (response.ok) {
               const data = await response.json();
               this.franchiselist = data.allFranchises;
-              console.log(this.franchiselist);
             } else {
               console.error("Failed to fetch franchises", response.statusText);
             }
           } catch (error) {
             console.error("Error fetching franchises:", error);
           }
+        },
+        async fetchUsers() {
+          try {
+            const response = await fetch("http://localhost:3000/user/getAllUsers", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            if (response.ok) {
+              const data = await response.json();
+              this.userlist = data.allUsers;
+            } else {
+              console.error("Failed to fetch users", response.statusText);
+            }
+          } catch (error) {
+            console.error("Error fetching users:", error);
+          }
         }
     },
     mounted() {
     this.fetchFranchises();
+    this.fetchUsers();
   },
     components: {
         Footer,
     },
     props: {
         table: String,
+        id: String
     },
 };
 

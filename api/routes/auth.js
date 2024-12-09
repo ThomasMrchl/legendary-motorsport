@@ -16,7 +16,7 @@ router.get("/session-status", checkStatus);
 
 function checkStatus(req, res) {
     if (req.isAuthenticated()) {
-        return res.json({ loggedIn: true, user: req.user });
+        return res.json({ loggedIn: true, user: req.user, role: req.role });
     } else {
         return res.json({ loggedIn: false });
     }

@@ -34,6 +34,23 @@ exports.getCarById = async (req, res) => {
     }
 };
 
+exports.getCarsByOwner = async (req, res) => {
+
+    if (!req?.params?.owner) return res.status(400).json({ 'message': 'Owner required.' });
+
+    try {
+        const [carsByOwner] = await pool.query('SELECT * FROM car WHERE car_owner = ?', [req.params.owner]);
+        if (carsByOwner.length == 0) {  
+            return res.status(200).send({'message': 'No car for this user.'});
+        }
+
+        return res.status(200).json({carsByOwner});
+
+    } catch (err) {
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 exports.createCar = async (req, res) => {
 
     try {
@@ -96,7 +113,6 @@ exports.createCar = async (req, res) => {
 };
 
 exports.deleteCar = async (req, res) => {
-    console.log("ccici");
     try {
         const { id } = req.params;
 
@@ -124,33 +140,29 @@ exports.deleteCar = async (req, res) => {
 
 exports.updateCar = async (req, res) => {
     try {
+        const { id } = req.params;
+
         const {
-            
-            franchise_id,
-            status,
-            color,
-            mileage,
-            conditions,
-            buyout_price,
-            first_price,
-            latest_price,
-            model,
-            brand,
-            engine_type,
-            horse_power,
-            buyer_id, 
-            id_car,
+            car_brand,
+            car_model,
+            car_horsepower,
+            car_mileage,
+            car_initial_price,
+            car_selling_price,
+            car_owner,
+            car_status,
+            car_condition,
+            car_engine,
+            car_franchise,
+            car_color
         } = req.body;
-        console.log(req.body);
-        // List of required fields
+
         const requiredFields = [
-            'id_car', 'franchise_id', 'status', 'color', 'mileage', 'conditions',
-            'buyout_price', 'first_price', 'latest_price', 'model', 'brand',
-            'engine_type', 'horse_power'
-        ];
+            'car_brand', 'car_model', 'car_horsepower', 'car_mileage', 'car_initial_price', 'car_selling_price',
+            'car_condition', 'car_engine', 'car_franchise', 'car_color'];
 
         // Check for missing fields
-        const missingFields = requiredFields.filter(field => req.body[field] === undefined || req.body[field] === null || req.body[field] === '');
+        const missingFields = requiredFields.filter(field => req.body[field] === undefined);
         if (missingFields.length > 0) {
             return res.status(400).json({
                 message: `Missing required fields: ${missingFields.join(', ')}`
@@ -158,81 +170,75 @@ exports.updateCar = async (req, res) => {
         }
 
         const queryParams = [
-            franchise_id,
-            status,
-            color,
-            mileage,
-            conditions,
-            buyout_price,
-            first_price,
-            latest_price,
-            model,
-            brand,
-            engine_type,
-            horse_power,
-            id_car, 
+            car_brand,
+            car_model,
+            car_horsepower,
+            car_mileage,
+            car_initial_price,
+            car_selling_price,
+            car_status,
+            car_condition,
+            car_engine,
+            car_franchise,
+            car_color 
         ];
 
         let querySQL = '';
 
-        // If car  sold, include buyer_id
-        if (status === 'sold' && buyer_id) {
+        if (car_status === 'Sold' && car_owner) {
             querySQL = `
                 UPDATE car
                 SET
-                    franchise = ?, 
-                    status = ?, 
-                    color = ?, 
-                    mileage = ?, 
-                    conditions = ?, 
-                    buyout_price = ?, 
-                    first_price = ?, 
-                    latest_price = ?, 
-                    model = ?, 
-                    brand = ?, 
-                    engine = ?, 
-                    horsepower = ?,
-                    buyer_id = ?
-                WHERE id_car = ?;
+                    car_brand = ?, 
+                    car_model = ?, 
+                    car_horsepower = ?, 
+                    car_mileage = ?, 
+                    car_initial_price = ?, 
+                    car_selling_price = ?, 
+                    car_status = ?, 
+                    car_condition = ?, 
+                    car_engine = ?, 
+                    car_franchise = ?, 
+                    car_color = ?,
+                    car_owner = ?
+                WHERE car_id = ?;
             `;
 
-            queryParams.push(buyer_id);
-            queryParams.push(id_car); 
+            queryParams.push(car_owner);
+            queryParams.push(id); 
         } else {
             querySQL = `
                 UPDATE car
                 SET
-                    franchise = ?, 
-                    status = ?, 
-                    color = ?, 
-                    mileage = ?, 
-                    conditions = ?, 
-                    buyout_price = ?, 
-                    first_price = ?, 
-                    latest_price = ?, 
-                    model = ?, 
-                    brand = ?, 
-                    engine = ?, 
-                    horsepower = ?
-                WHERE id_car = ?;
+                    car_brand = ?, 
+                    car_model = ?, 
+                    car_horsepower = ?, 
+                    car_mileage = ?, 
+                    car_initial_price = ?, 
+                    car_selling_price = ?,
+                    car_owner = null,
+                    car_status = ?,
+                    car_condition = ?, 
+                    car_engine = ?, 
+                    car_franchise = ?, 
+                    car_color = ?
+                WHERE car_id = ?;
             `;
 
-            queryParams.push(id_car);
+            queryParams.push(id);
         }
 
         const [result] = await pool.query(querySQL, queryParams);
 
-        // Check if car was updated
         if (result.affectedRows === 0) {
             return res.status(404).json({
-                message: `Car with ID ${id_car} not found`
+                message: `Car with ID ${id} not found`
             });
         }
 
-        // Send success response
         res.status(200).json({
             message: 'Car updated successfully!',
-            carId: id_car
+            carId: id
         });
 
     } catch (error) {
