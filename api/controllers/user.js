@@ -15,66 +15,54 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-exports.createUser = async (req, res) => {
+exports.getUserbyName = async (req, res) => {
     try {
-        const {
-            first_name,
-            last_name,
-            birth_date,
-            email,
-            password,
-            is_employee,
-            role,
-            yearly_salary
-        } = req.body;
+        const { name } = req.params;
+        const [user] = await pool.query('SELECT * FROM user WHERE user_name = ?', [name]);
 
-        const requiredFields = [
-            'first_name', 'last_name', 'birth_date', 'email', 'password', 'is_employee', 'role', 'yearly_salary'
-        ];
-
-        const missingFields = requiredFields.filter(field => req.body[field] === undefined);
-        if (missingFields.length > 0) {
-            return res.status(400).json({
-                message: `Missing required fields: ${missingFields.join(', ')}`
-            });
+        if (user.length === 0) {
+            return res.status(404).send({ 'message': 'User not found.' });
         }
 
-        const emailCheckQuery = `SELECT id_user FROM user WHERE email = ? LIMIT 1`;
-        const [existingUser] = await pool.query(emailCheckQuery, [email]);
+        return res.status(200).send({user});
 
-        if (existingUser.length > 0) {
-            return res.status(400).json({
-                message: 'Email is already in use. Please use a different email.'
-            });
+    } catch (err) {
+        console.error('Erreur lors de la requête :', err);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+exports.updateUser = async (req, res) => {
+    try {
+        const { name } = req.params;
+        const { user_firstname, user_lastname, user_birthdate } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ message: "User name is required" });
+        }
+
+        if (!user_firstname || !user_lastname || !user_birthdate) {
+            return res.status(400).json({ message: "Firstname, lastname, and birthdate are required" });
         }
 
         const querySQL = `
-            INSERT INTO user 
-            (first_name, last_name, birth_date, address, email, password, is_employee, role, yearly_salary)
-            VALUES (?, ?, ?, 1, ?, ?, ?, ?, ?)
+            UPDATE user
+            SET user_firstname = ?, user_lastname = ?, user_birthdate = ?
+            WHERE user_name = ?
         `;
 
-        const [result] = await pool.query(querySQL, [
-            first_name,
-            last_name,
-            birth_date,
-            email,
-            password,
-            is_employee,
-            role,
-            yearly_salary
-        ]);
+        const [result] = await pool.query(querySQL, [user_firstname, user_lastname, user_birthdate, name]);
 
-        res.status(201).json({
-            message: 'User created successfully!',
-            userId: result.insertId
-        });
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
 
+        res.status(200).json({ message: "User updated successfully" });
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error("Error updating user:", error);
         res.status(500).json({
-            message: 'Internal server error',
-            error: error.message
+            message: "Internal server error",
+            error: error.message,
         });
     }
 };

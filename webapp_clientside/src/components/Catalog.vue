@@ -63,26 +63,6 @@ export default {
         console.error("Error checking session status:", error);
         this.error = "Failed to check login status.";
       }
-    },
-    async logOut() {
-      try {
-        const response = await fetch("http://localhost:3000/auth/logout", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (response.ok) {
-          this.$router.go(0);
-        } else {
-          console.error("Failed to logout:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error logging out:", error);
-        this.error = "Failed to check logout.";
-      }
     }
   },
   mounted() {
@@ -119,8 +99,8 @@ export default {
             </div>
           </div>
           <div class="content-sort-button">
-            <div v-if="loggedIn" class="sort-button-logged" @click="logOut()">
-              {{ username }} : LOG OUT
+            <div v-if="loggedIn" class="sort-button-logged" @click="redirectToRoute('/user')">
+              {{ username }}
             </div>
             <div v-else class="sort-button" @click="redirectToRoute('/login')">
               LOGIN OR SIGN UP NOW !
