@@ -32,8 +32,6 @@ module.exports = {
             // TODO: better salt + pw hash (bcrypt, pbkdf2, argon2)
             // COLLATE usually not needed (mariaDb compatibility)
             const [rows, fields] = await pool.execute(sql, [username, password]);
-            console.log("ici1");
-            console.log(rows);
             return rows.length === 1 && rows[0].user_name === username;
         } catch (err) {
             console.log(err);

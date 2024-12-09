@@ -7,7 +7,7 @@
         <p class="footer-description">The most <span class="red">luxuous</span> and <span class="red">self-confident</span> cars of Los Santos.</p>
         <nav class="footer-nav">
           <ul>
-            <li><a href="/catalog/0"><button>CATALOG</button></a></li>
+            <li><a href="/catalog"><button>CATALOG</button></a></li>
             <li><a href="/login"><button>LOGIN</button></a></li>
           </ul>
         </nav>
@@ -49,10 +49,6 @@
   &:hover {
     cursor: pointer;
   }
-}
-
-.footer-content {
-
 }
 
 .seller {

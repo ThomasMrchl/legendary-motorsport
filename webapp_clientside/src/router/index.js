@@ -1,15 +1,26 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from '@/components/Home'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from '@/components/Home';
 import Catalog from "@/components/Catalog.vue";
 import Login from '../components/Login.vue';
 import Create from '../components/Create.vue';
 import Modify from '../components/Modify.vue';
-import Error from '../components/404.vue'
+import Error from '../components/404.vue';
 import Car from "../components/Car.vue";
 import Register from '../components/Register.vue';
 import AuthModule from "../components/AuthModule.vue";
+import User from "../components/User.vue";
 
+const axios = require('axios')
+
+async function checkAuthStatus() {
+  try {
+      const response = await axios.get('http://localhost:3000/auth/session-status', { withCredentials: true });
+      return response.data.loggedIn;
+  } catch (err) {
+      return false;
+  }
+}
 
 Vue.use(Router)
 
@@ -31,7 +42,15 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login,
-      props: true
+      props: true,
+      beforeEnter: async (to, from, next) => {
+        const loggedIn = await checkAuthStatus();
+        if (loggedIn) {
+            next('/');
+        } else {
+            next();
+        }
+      }
     },
     {
       path: '/create/:table',
@@ -54,7 +73,15 @@ export default new Router({
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
+      beforeEnter: async (to, from, next) => {
+        const loggedIn = await checkAuthStatus();
+        if (loggedIn) {
+            next('/');
+        } else {
+            next();
+        }
+      }
     },
     {
       path: '*',
@@ -66,5 +93,18 @@ export default new Router({
       name: 'AuthenticationDemo',
       component: AuthModule
     },
+    {
+      path: '/user',
+      name: 'User',
+      component: User,
+      beforeEnter: async (to, from, next) => {
+        const loggedIn = await checkAuthStatus();
+        if (loggedIn) {
+            next();
+        } else {
+            next('/');
+        }
+      }
+    }
   ]
 })
