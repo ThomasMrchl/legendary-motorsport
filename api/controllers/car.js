@@ -21,7 +21,7 @@ exports.getCarById = async (req, res) => {
 
     try {
 
-        const [carById] = await pool.query('SELECT * FROM car WHERE id_car = ?', [req.params.id]);
+        const [carById] = await pool.query('SELECT * FROM car WHERE car_id = ?', [req.params.id]);
         if (carById.length !== 1) {
             
             return res.status(404).send({'message': 'Car with id not found.'});
@@ -38,25 +38,21 @@ exports.createCar = async (req, res) => {
 
     try {
         const {
-            franchise_id,
-            status,
-            color,
-            mileage,
-            conditions,
-            buyout_price,
-            first_price,
-            latest_price,
-            model,
-            brand,
-            engine_type,
-            horse_power
+            car_brand,
+            car_model,
+            car_horsepower,
+            car_mileage,
+            car_initial_price,
+            car_selling_price,
+            car_condition,
+            car_engine,
+            car_franchise,
+            car_color
         } = req.body;
 
         const requiredFields = [
-            'franchise_id', 'status', 'color', 'mileage', 'conditions',
-            'buyout_price', 'first_price', 'latest_price', 'model', 'brand',
-            'engine_type', 'horse_power'
-        ];
+            'car_brand', 'car_model', 'car_horsepower', 'car_mileage', 'car_initial_price',
+            'car_selling_price', 'car_condition', 'car_engine', 'car_franchise', 'car_color'];
 
         const missingFields = requiredFields.filter(field => !req.body[field]);
         if (missingFields.length > 0) {
@@ -66,24 +62,22 @@ exports.createCar = async (req, res) => {
         }
 
         const querySQL = `
-            INSERT INTO car 
-            (franchise, status, color, mileage, conditions, buyout_price, first_price, latest_price, buyer, model, brand, engine, horsepower, final_owner)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, ?, ?, 0)
+            INSERT INTO car
+            (car_brand, car_model, car_horsepower, car_mileage, car_initial_price, car_selling_price, car_owner, car_status, car_condition, car_engine, car_franchise, car_color)
+            VALUES (?, ?, ?, ?, ?, ?, NULL, 'Available', ?, ?, ?, ?)
         `;
 
         const [result] = await pool.query(querySQL, [
-            franchise_id,
-            status,
-            color,
-            mileage,
-            conditions,
-            buyout_price,
-            first_price,
-            latest_price,
-            model,
-            brand,
-            engine_type,
-            horse_power
+            car_brand,
+            car_model,
+            car_horsepower,
+            car_mileage,
+            car_initial_price,
+            car_selling_price,
+            car_condition,
+            car_engine,
+            car_franchise,
+            car_color
         ]);
 
 
@@ -110,7 +104,7 @@ exports.deleteCar = async (req, res) => {
             return res.status(400).json({ message: "Car ID is required" });
         }
 
-        const querySQL = `DELETE FROM car WHERE id_car = ?`;
+        const querySQL = `DELETE FROM car WHERE car_id = ?`;
 
         const [result] = await pool.query(querySQL, [id]);
 

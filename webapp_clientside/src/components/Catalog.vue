@@ -13,6 +13,8 @@ export default {
       cars: [],
       isLoading: false,
       error: null,
+      loggedIn: false,
+      username: ""
     };
   },
   methods: {
@@ -38,9 +40,54 @@ export default {
     redirectToRoute(route) {
       this.$router.push(route);
     },
+    async checkStatus() {
+      try {
+        const response = await fetch("http://localhost:3000/auth/session-status", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          this.loggedIn = data.loggedIn;
+          if (this.loggedIn){
+            this.username = data.user.user_name;
+          }
+        } else {
+          console.error("Failed to check session status:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error checking session status:", error);
+        this.error = "Failed to check login status.";
+      }
+    },
+    async logOut() {
+      try {
+        const response = await fetch("http://localhost:3000/auth/logout", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          this.$router.go(0);
+        } else {
+          console.error("Failed to logout:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error logging out:", error);
+        this.error = "Failed to check logout.";
+      }
+    }
   },
   mounted() {
     this.fetchCars();
+    this.checkStatus();
   },
 };
 </script>
@@ -72,7 +119,10 @@ export default {
             </div>
           </div>
           <div class="content-sort-button">
-            <div class="sort-button" @click="redirectToRoute('/login')">
+            <div v-if="loggedIn" class="sort-button-logged" @click="logOut()">
+              {{ username }} : LOG OUT
+            </div>
+            <div v-else class="sort-button" @click="redirectToRoute('/login')">
               LOGIN OR SIGN UP NOW !
             </div>
           </div>
@@ -90,8 +140,8 @@ export default {
               <div class="car-list">
                 <CarCard
                   v-for="car in cars"
-                  :key="car.id_car"
-                  :id="car.id_car"
+                  :key="car.car_id"
+                  :id="car.car_id"
                   v-bind="car"
                 />
               </div>
@@ -147,7 +197,7 @@ export default {
 }
 
 .catalog-wrapper {
-  heith: auto;
+  height: auto;
   background-color: #48130E;
   display: flex;
   flex-direction: column;
@@ -268,6 +318,22 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-right: 27px;
+}
+
+.sort-button-logged {
+  background: linear-gradient(to bottom, #FF4500, #8B0000);
+  color: white;
+  width: auto;
+  text-transform: uppercase;
+  border: 1px solid #5A0000;
+  border-radius: 5px;
+  padding: 15px 20px;
+  font-family: 'Arial';
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 27px;
+  text-align: center;
 }
 
 button {
