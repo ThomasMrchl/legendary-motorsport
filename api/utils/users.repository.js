@@ -1,5 +1,4 @@
 const pool = require('../databases/db');
-const bcrypt = require('bcrypt');
 
 // TODO (everyone): Registration...
 // user_id, user_created, user_name, user_email, user_role, user_pass
@@ -12,7 +11,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
     async getOneUser(username) {
         try {
-            let sql = "SELECT user_name FROM user WHERE user_name = ? ";
+            let sql = "SELECT user_name, user_role FROM user WHERE user_name = ? ";
             // must leave out the password+hash info from result!
             const [rows, fields] = await pool.execute(sql, [ username ]);
             if (rows.length === 1) {

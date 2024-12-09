@@ -14,7 +14,8 @@ export default {
       isLoading: false,
       error: null,
       loggedIn: false,
-      username: ""
+      username: "",
+      role: ""
     };
   },
   methods: {
@@ -55,6 +56,7 @@ export default {
           this.loggedIn = data.loggedIn;
           if (this.loggedIn){
             this.username = data.user.user_name;
+            this.role = data.user.user_role;
           }
         } else {
           console.error("Failed to check session status:", response.statusText);
@@ -115,7 +117,8 @@ export default {
                 <button>2 DOOR</button>
                 <button>4 DOOR</button>
                 <button>MOTORCYCLES</button>
-                <button @click="redirectToRoute('/create/car')">ADD A CAR</button>
+                <button v-if="role === 'ADMIN'" @click="redirectToRoute('/create/car')">ADD A CAR</button>
+                <button v-else>ELECTRIC</button>
               </div>
               <div class="car-list">
                 <CarCard

@@ -10,6 +10,8 @@ export default {
       car: null,
       isLoading: false,
       error: null,
+      loggedIn: false,
+      role: ""
     };
   },
   methods: {
@@ -34,6 +36,28 @@ export default {
         this.error = "An error occurred while fetching car details.";
       } finally {
         this.isLoading = false;
+      }
+    },
+    async checkStatus() {
+      try {
+        const response = await fetch("http://localhost:3000/auth/session-status", {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          this.loggedIn = data.loggedIn;
+          this.role = data.user.user_role;
+        } else {
+          console.error("Failed to check session status:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error checking session status:", error);
+        this.error = "Failed to check login status.";
       }
     },
     async deleteCar() {
@@ -68,6 +92,7 @@ export default {
   mounted() {
     console.log('Car ID:', this.id);
     this.fetchCar();
+    this.checkStatus();
   },
 };
 </script>
@@ -102,13 +127,14 @@ export default {
 
         <!-- Action Buttons -->
         <div class="car-actions">
-          <div v-if="car.status !== 'Sold'">
+          <div v-if="car.car_status !== 'Sold' && loggedIn">
             <button class="buy-button">Buy Now</button>
           </div>
-          <RouterLink :to="`/modify/car/${id}`">
+          <button class="buy-button" disabled v-else>Buy Now</button>
+          <RouterLink :to="`/modify/car/${id}`" v-if="role === 'ADMIN'">
             <button class="info-button">Modify</button>
           </RouterLink>
-          <button class="delete-button" @click="deleteCar">Delete</button>
+          <button class="delete-button" @click="deleteCar" v-if="role === 'ADMIN'">Delete</button>
         </div>
       </div>
     </div>
@@ -121,6 +147,11 @@ export default {
   background-color: #240102;
   padding-top: 50px;
 }
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
 .car-card {
   flex-direction: column;

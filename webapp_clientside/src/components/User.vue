@@ -1,16 +1,20 @@
 <script>
 import Footer from "../components/Footer.vue";
+import CarWidget from "./CarWidget.vue";
 const axios = require('axios');
 export default {
   data() {
     return {
+        carlist: [],
+        userlist: [],
         user: {
             user_name: "",
             user_email: "",
             user_birthdate: "",
             user_firstname: "",
             user_lastname: "",
-            user_created: ""
+            user_created: "",
+            user_role: ""
         }
     };
   },
@@ -22,6 +26,7 @@ export default {
     async getSession(){
         try {
             const username = await axios.get('http://localhost:3000/auth/session-status', { withCredentials: true });
+            this.getCarsOwned(username.data.user.user_name);
             return this.getUser(username.data.user.user_name);
         } catch (err) {
             console.log(err);
@@ -32,13 +37,36 @@ export default {
     try{
         const response = await axios.get('http://localhost:3000/user/getUserbyName/' + name);
         this.user = response.data.user[0];
+        if (this.user.user_role == 'ADMIN'){this.getUsers();}
         this.setDate();
         return true;
     } catch (err) {
         console.log(err);
         return false;
     }
-},
+    },
+    async getCarsOwned(name) {
+    try{
+        const response = await axios.get('http://localhost:3000/car/getCarsByOwner/' + name);
+        if (response.data.carsByOwner){
+            this.carlist = response.data.carsByOwner;
+        }
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+    },
+    async getUsers() {
+    try{
+        const response = await axios.get('http://localhost:3000/user/getAllUsers');
+        this.userlist = response.data.allUsers;
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+    },
 redirectToRoute(route) {
       this.$router.push(route);
     },
@@ -99,7 +127,8 @@ redirectToRoute(route) {
     this.getSession();
   },
   components: {
-    Footer
+    Footer,
+    CarWidget
   }
 }
 </script>
@@ -159,6 +188,45 @@ redirectToRoute(route) {
                                 </form>
                             </div>
                         </div>
+                        <div class="Ownedcars" v-if="carlist.length > 0"><div class="textcars">LIST OF <span class="red">OWNED</span> CARS:</div></div>
+                        <section class="card-section" v-if="carlist.length > 0">
+                            <div class="franchise-list" v-if="carlist.length > 0">
+                            <CarWidget
+                                v-for="car in carlist"
+                                :key="car.car_id"
+                                :brand="car.car_brand"
+                                :model="car.car_model"
+                                :price="car.car_selling_price"
+                                :color="car.car_color"
+                                :id="car.car_id"
+                            />
+                            </div>
+                        </section>
+                        <div class="Ownedcars" v-if="user.user_role === 'ADMIN'"><div class="textcars">LIST OF <span class="red">USERS</span></div></div>
+                        <div class="table-container" v-if="user.user_role === 'ADMIN'">
+                          <table class="user-table">
+                            <thead>
+                              <tr>
+                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Birthdate</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="user in userlist">
+                                <td>{{ user.user_name }}</td>
+                                <td>{{ user.user_firstname }}</td>
+                                <td>{{ user.user_lastname }}</td>
+                                <td>{{ user.user_birthdate }}</td>
+                                <td>{{ user.user_email }}</td>
+                                <td>{{ user.user_role }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -168,6 +236,46 @@ redirectToRoute(route) {
 </template>
 
 <style scoped>
+
+.table-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #8b0000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #3e3e3e;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 16px;
+}
+
+.user-table th, .user-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #1e1e1e;
+}
+
+td {
+  color: white;
+}
+
+.user-table th {
+    background: linear-gradient(135deg, #ff4500, #8b0000);
+    color: #fff;
+}
+
+.user-table tr:hover {
+    background-color: #1e1e1e;
+}
+
+.user-table tr:nth-child(even) {
+    background-color: #1e1e1e;
+}
+
 
 @media screen and (max-width: 600px) {
   .column {
@@ -179,6 +287,25 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.Ownedcars {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: white;
+  font-size: 30px;
+}
+
+.card-section {
+  display: flex;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .buttons {
