@@ -9,5 +9,6 @@ router.get('/getCarsByOwner/:owner', carController.getCarsByOwner);
 router.post('/create', carController.createCar);
 router.post('/deleteCar/:id', carController.deleteCar);
 router.post('/updateCar/:id', carController.updateCar);
+router.post('/buyCar/:id', carController.buyCar);
 
 module.exports = router;

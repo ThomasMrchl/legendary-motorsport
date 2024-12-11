@@ -34,6 +34,53 @@ exports.getCarById = async (req, res) => {
     }
 };
 
+exports.buyCar = async (req, res) => {
+
+    if (!req?.params?.id) {
+        return res.status(400).json({ message: 'Car ID is required.' });
+    }
+
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const username = req.user.user_name;
+    const carId = req.params.id;
+
+    try {
+
+        const [targetCar] = await pool.query('SELECT * FROM car WHERE car_id = ?', [carId]);
+        if (targetCar.length !== 1) {
+            return res.status(404).json({ message: 'Car with the specified ID not found.' });
+        }
+
+        if (targetCar[0].car_status === 'Sold') {
+            return res.status(400).json({ message: 'Car is already sold.' });
+        }
+
+        const [targetUser] = await pool.query('SELECT user_name FROM user WHERE user_name = ?', [username]);
+        if (targetUser.length !== 1) {
+            return res.status(404).json({ message: 'No user with this name.' });
+        }
+
+        const queryOwner = `
+            UPDATE car
+            SET car_owner = ?, car_status = 'Sold'
+            WHERE car_id = ?;`;
+        const [carBuy] = await pool.query(queryOwner, [username, carId]);
+
+        if (carBuy.affectedRows === 1) {
+            return res.status(201).json({ message: 'Car bought successfully.' });
+        } else {
+            return res.status(500).json({ message: 'Failed to update car information.' });
+        }
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: 'Internal server error.' });
+    }
+};
+
+
 exports.getCarsByOwner = async (req, res) => {
 
     if (!req?.params?.owner) return res.status(400).json({ 'message': 'Owner required.' });

@@ -85,6 +85,32 @@ export default {
         alert("An error occurred while deleting the car.");
       }
     },
+    async buyCar() {
+      if (!confirm("Are you sure you want to buy this car?")) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3000/car/buyCar/${this.id}`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          alert("Car successfully bought!");
+          this.redirectToRoute('/user');
+        } else {
+          console.error("Failed to buy car", response.statusText);
+          alert("Failed to buy the car. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error buying car:", error);
+        alert("An error occurred while buying the car.");
+      }
+    },
     redirectToRoute(route) {
       this.$router.push(route);
     },
@@ -127,9 +153,10 @@ export default {
 
         <!-- Action Buttons -->
         <div class="car-actions">
-          <div v-if="car.car_status !== 'Sold' && loggedIn">
-            <button class="buy-button">Buy Now</button>
+          <div v-if="car.car_status === 'Available' && loggedIn">
+            <button class="buy-button" @click="buyCar">Buy Now</button>
           </div>
+          <button class="delete-button" disabled v-else-if="car.car_status === 'Sold'">Car Sold !</button>
           <button class="buy-button" disabled v-else>Buy Now</button>
           <RouterLink :to="`/modify/car/${id}`" v-if="role === 'ADMIN'">
             <button class="info-button">Modify</button>
