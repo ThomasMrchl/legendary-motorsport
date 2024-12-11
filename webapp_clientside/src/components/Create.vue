@@ -9,7 +9,8 @@
             :src="require('@/assets/img/LegendaryLogo2.png')"
             alt="Logo Legendary Motorsport"
           />
-          <h2>Create a car</h2>
+          <h2 v-if="table === 'car'">Create a car</h2>
+          <h2 v-else>Create an address</h2>
         </div>
         <div class="bottom-content" v-if="table === 'car'">
           <p>Please enter the informations of the car.</p>
@@ -71,6 +72,27 @@
             <button type="submit">Create</button>
           </form>
         </div>
+        <div class="bottom-content" v-else>
+          <p>Please enter your address.</p>
+          <form @submit.prevent="submitAddress">
+            <label for="Number">Number:</label>
+            <input type="number" placeholder="12" id="Number" v-model="address.address_number" min="0" required />
+
+            <label for="Street">Street:</label>
+            <input type="text" placeholder="Marble Road" id="Street" v-model="address.address_street" required />
+
+            <label for="Postal Code">Postal Code:</label>
+            <input type="text" placeholder="SW1A 2AA" id="Postal Code" v-model="address.address_postalcode" required />
+
+            <label for="City">City:</label>
+            <input type="text" placeholder="London" id="City" v-model="address.address_city" required />
+
+            <label for="Country">Country:</label>
+            <input type="text" placeholder="England" id="Country" v-model="address.address_country" required />
+
+            <button type="submit">Create</button>
+          </form>
+        </div>
       </div>
     </div>
     <Footer />
@@ -95,6 +117,13 @@ export default {
         car_engine: "",
         car_franchise: "",
         car_color : ""
+      },
+      address: {
+        address_number: "",
+        address_street: "",
+        address_country: "",
+        address_postalcode: "",
+        address_city: ""
       }
     };
   },
@@ -129,6 +158,29 @@ export default {
       } catch (err) {
         console.error("Error submitting car:", err);
         alert("Failed to create the car. Please try again later.");
+      }
+    },
+    async submitAddress() {
+      try {
+        const response = await fetch("http://localhost:3000/address/create", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(this.address)
+        });
+
+        if (response.ok) {
+          alert("Address created successfully!");
+          this.redirectToRoute("/user");
+        } else {
+          const error = await response.json();
+          alert(`Error: ${error.message}`);
+        }
+      } catch (err) {
+        console.error("Error submitting address:", err);
+        alert("Failed to create the address. Please try again later.");
       }
     },
     async fetchFranchises() {

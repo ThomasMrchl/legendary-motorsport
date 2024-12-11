@@ -62,13 +62,27 @@ export default new Router({
       }
     },
     {
-      path: '/create/:table',
-      name: 'create',
+      path: '/create/car',
+      name: 'createc',
       component: Create,
-      props: true,
+      props: { table: 'car' },
       beforeEnter: async (to, from, next) => {
         const isAdmin = await checkAdmin();
         if (isAdmin) {
+            next();
+        } else {
+            next('/');
+        }
+      }
+    },
+    {
+      path: '/create/address',
+      name: 'createa',
+      component: Create,
+      props: { table: 'address' },
+      beforeEnter: async (to, from, next) => {
+        const loggedIn = await checkAuthStatus();
+        if (loggedIn) {
             next();
         } else {
             next('/');

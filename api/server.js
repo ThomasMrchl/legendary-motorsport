@@ -28,6 +28,7 @@ app.listen(PORT, '0.0.0.0',
 const carRoutes = require('./routes/car');
 const userRoutes = require('./routes/user');
 const franchiseRoutes = require('./routes/franchise');
+const addressRoutes = require('./routes/address');
 
 // *** MIDDLEWARES ***
 // Import middlewares
@@ -57,6 +58,7 @@ app.get('/', (request, response) => { // 'GET' as a HTTP VERB, not as a 'getter'
 app.use('/car', carRoutes);
 app.use('/user', userRoutes);
 app.use('/franchise', franchiseRoutes);
+app.use('/address', addressRoutes);
 
 // setup additional routes
 // app.use(routeBase, callback);
