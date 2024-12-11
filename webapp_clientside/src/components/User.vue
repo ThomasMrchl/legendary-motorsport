@@ -7,6 +7,7 @@ export default {
     return {
         carlist: [],
         userlist: [],
+        addressString: "",
         user: {
             user_name: "",
             user_email: "",
@@ -14,7 +15,8 @@ export default {
             user_firstname: "",
             user_lastname: "",
             user_created: "",
-            user_role: ""
+            user_role: "",
+            user_address: ""
         }
     };
   },
@@ -37,6 +39,9 @@ export default {
     try{
         const response = await axios.get('http://localhost:3000/user/getUserbyName/' + name);
         this.user = response.data.user[0];
+        if (this.user.user_address){
+          this.getAddress(this.user.user_address);
+        }
         if (this.user.user_role == 'ADMIN'){this.getUsers();}
         this.setDate();
         return true;
@@ -51,6 +56,17 @@ export default {
         if (response.data.carsByOwner){
             this.carlist = response.data.carsByOwner;
         }
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+    },
+    async getAddress(id) {
+    try{
+        const response = await axios.get('http://localhost:3000/address/getAddressById/' + id);
+        const address = response.data.address;
+        this.addressString = `${address.address_number} ${address.address_street}, ${address.address_postalcode} ${address.address_city}, ${address.address_country}`;
         return true;
     } catch (err) {
         console.log(err);
@@ -181,6 +197,12 @@ redirectToRoute(route) {
                                     <label for="birthdate">Birthdate:</label>
                                     <input type="date" id="birthdate" v-model="user.user_birthdate" required />
 
+                                    <div class="address">
+                                      <label for="address">Address:</label>
+                                      <input type="text" id="address" v-model="addressString" required disabled/>
+                                      <button type="button" @click="redirectToRoute('/create/address')">Create</button>
+                                    </div>
+
                                     <div class="buttons">
                                         <button type="submit">Save Changes</button>
                                         <button type="button" @click="logOut()">Log Out</button>
@@ -244,6 +266,17 @@ redirectToRoute(route) {
     border: 2px solid #8b0000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #3e3e3e;
+}
+
+.address {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+#address {
+  min-width: 300px;
 }
 
 .user-table {
@@ -319,6 +352,15 @@ label {
   color: #ff4500;
 }
 
+select {
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 2px solid #8b0000;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
 input[type="text"],
 input[type="date"] {
   padding: 0.75rem;
@@ -347,6 +389,12 @@ button:hover {
 
 input[type="text"]:focus,
 input[type="date"]:focus {
+  border-color: #ff4500;
+  box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+  outline: none;
+}
+
+select:focus {
   border-color: #ff4500;
   box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
   outline: none;
