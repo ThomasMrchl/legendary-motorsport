@@ -54,6 +54,17 @@
             <label for="Model">Model:</label>
             <input type="text" placeholder="Corvette" id="model" v-model="car.car_model" required />
 
+            <label for="carimage">Image:</label>
+            <div class="carimage">
+              <select v-model="car.car_image" required>
+                <option v-for="(url, index) in imageUrls" :key="index" :value="url">
+                  Image {{ index + 1 }}
+                </option>
+              </select>
+
+              <img :src="car.car_image" alt="Selected car image" class="smallimage"/>
+            </div>
+
             <label for="Engine Type">Engine Type:</label>
             <select id="enginetype-selection" v-model="car.car_engine" required>
               <option value="">-- Please choose an engine type --</option>
@@ -103,6 +114,18 @@ export default {
     return {
       franchiselist: [],
       isEmployee: false,
+      imageUrls: [
+        require('@/assets/img/car.jpg'),
+        require('@/assets/img/car2.jpg'),
+        require('@/assets/img/car3.jpg'),
+        require('@/assets/img/car4.jpg'),
+        require('@/assets/img/car5.jpg'),
+        require('@/assets/img/car6.jpg'),
+        require('@/assets/img/car7.jpg'),
+        require('@/assets/img/car8.jpg'),
+        require('@/assets/img/car9.jpg'),
+        require('@/assets/img/car10.jpg')
+      ],
       car: {
         car_brand: "",
         car_model: "",
@@ -113,7 +136,8 @@ export default {
         car_condition: "",
         car_engine: "",
         car_franchise: "",
-        car_color : ""
+        car_color : "",
+        car_image: "/static/img/car.3d8d480.jpg"
       },
       address: {
         address_number: "",
@@ -139,6 +163,7 @@ export default {
         this.car.latest_price = this.car.first_price;
         const response = await fetch("http://localhost:3000/car/create", {
           method: "POST",
+          credentials: 'include',
           headers: {
             "Content-Type": "application/json"
           },
@@ -216,6 +241,23 @@ export default {
 body {
   font-family: Arial, sans-serif;
   color: #fff;
+}
+
+.smallimage {
+  max-width: 200px;
+  height: auto;
+  border: 3px solid #8b0000;
+  box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+  border-radius: 10px;
+}
+
+
+.carimage {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
 .create-wrapper {

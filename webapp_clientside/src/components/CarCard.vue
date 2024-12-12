@@ -17,7 +17,8 @@ export default {
     car_selling_price: Number,
     car_color: String,
     car_status: String,
-    car_horsepower: Number
+    car_horsepower: Number,
+    car_image: String
   },
   methods: {
     async fetchFranchiseName(id) {
@@ -52,11 +53,12 @@ export default {
       <p>{{ franchise_name }}</p>
     </div>
     <div class="car-image">
-      <img :src="require('@/assets/img/car.jpg')" :alt="`${car_brand} ${car_model}`" />
+      <img :src="car_image" :alt="`${car_brand} ${car_model}`" />
     </div>
     <div class="bottom-banner">
       <p>{{ car_brand }} {{ car_model }}</p>
-      <button>${{car_selling_price}}</button>
+      <button class="greenbutton" v-if="car_status === 'Available'">${{car_selling_price}}</button>
+      <button class="redbutton" v-else>${{car_selling_price}}</button>
     </div>
     </RouterLink>
   </div>
@@ -90,11 +92,23 @@ export default {
 
 .car-image img {
   width: 100%;
-  height: auto;
+  height: 200px;
 }
 
-button {
+.redbutton {
   background: linear-gradient(to bottom, #FF4500, #8B0000);
+  color: white;
+  border: 1px solid #5A0000;
+  border-radius: 5px;
+  padding: 15px 20px;
+  font-family: 'Arial';
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.greenbutton {
+  background: linear-gradient(to bottom, #56ff3c, #04d61981);
   color: white;
   border: 1px solid #5A0000;
   border-radius: 5px;

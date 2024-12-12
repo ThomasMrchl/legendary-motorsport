@@ -82,7 +82,7 @@ export default {
   mounted() {
     this.fetchCars();
     this.checkStatus();
-  },
+  }
 };
 </script>
 

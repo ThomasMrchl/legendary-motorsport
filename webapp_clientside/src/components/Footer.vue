@@ -8,7 +8,8 @@
         <nav class="footer-nav">
           <ul>
             <li><a href="/catalog"><button>CATALOG</button></a></li>
-            <li><a href="/login"><button>LOGIN</button></a></li>
+            <li v-if="loggedIn"><a href="/user"><button>{{username}}</button></a></li>
+            <li v-else><a href="/login"><button>LOGIN</button></a></li>
           </ul>
         </nav>
         <div class="footer-bottom">
@@ -20,9 +21,35 @@
   </footer>
 </template>
 
-<script setup>
+<script>
+import axios from 'axios';
 
+export default {
+  data() {
+    return {
+      username: '',
+      loggedIn: false
+    };
+  },
+  methods: {
+    async getSession() {
+      try {
+        const response = await axios.get('http://localhost:3000/auth/session-status', { withCredentials: true });
+        this.loggedIn = response.data.loggedIn;
+        if (this.loggedIn){
+          this.username = response.data.user.user_name;
+        }
+      } catch (err) {
+        console.error('Error fetching session:', err);
+      }
+    },
+  },
+  mounted() {
+    this.getSession();
+  },
+};
 </script>
+
 
 <style scoped>
 .footer {
@@ -96,6 +123,7 @@ button {
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-transform: uppercase;
 
   &:hover {
     background: white;

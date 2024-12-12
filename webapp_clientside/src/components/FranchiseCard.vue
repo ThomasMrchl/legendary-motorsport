@@ -5,7 +5,8 @@ export default {
     name: String,
     capacity: Number,
     phonenumber: Number,
-    openingyear: Number
+    openingyear: Number,
+    cars: Number
   }
 }
 </script>
@@ -16,7 +17,8 @@ export default {
       <p>Legendary Motorsport : {{name}}</p>
     </div>
     <div class="bottom-banner">
-      <p>{{capacity}} vehicules available.</p>
+      <p v-if="cars > 1">{{cars}} vehicules listed / {{capacity}} maximum.</p>
+      <p v-else>{{cars}} vehicule listed / {{capacity}} maximum.</p>
       <button>Since {{openingyear}}</button>
     </div>
   </div>
@@ -53,7 +55,6 @@ button {
   padding: 15px 20px;
   font-family: 'Arial';
   font-size: 14px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 </style>
