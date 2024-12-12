@@ -15,8 +15,17 @@ export default {
       error: null,
       loggedIn: false,
       username: "",
-      role: ""
+      role: "",
+      selectedFilter: "ALL",
     };
+  },
+  computed: {
+    filteredCars() {
+      if (this.selectedFilter === "ALL") {
+        return this.cars;
+      }
+      return this.cars.filter((car) => car.car_engine === this.selectedFilter);
+    },
   },
   methods: {
     async fetchCars() {
@@ -54,7 +63,7 @@ export default {
         if (response.ok) {
           const data = await response.json();
           this.loggedIn = data.loggedIn;
-          if (this.loggedIn){
+          if (this.loggedIn) {
             this.username = data.user.user_name;
             this.role = data.user.user_role;
           }
@@ -65,7 +74,10 @@ export default {
         console.error("Error checking session status:", error);
         this.error = "Failed to check login status.";
       }
-    }
+    },
+    setFilter(filter) {
+      this.selectedFilter = filter;
+    },
   },
   mounted() {
     this.fetchCars();
@@ -113,16 +125,21 @@ export default {
             <div v-if="error" class="error">{{ error }}</div>
             <div v-else class="grid-container">
               <div class="buttons">
-                <button>FEATURED</button>
-                <button>2 DOOR</button>
-                <button>4 DOOR</button>
-                <button>MOTORCYCLES</button>
-                <button v-if="role === 'ADMIN'" @click="redirectToRoute('/create/car')">ADD A CAR</button>
-                <button v-else>ELECTRIC</button>
+                <button @click="setFilter('ALL')" :class="{ active: selectedFilter === 'ALL' }">ALL</button>
+                <button @click="setFilter('Diesel')" :class="{ active: selectedFilter === 'Diesel' }">DIESEL</button>
+                <button @click="setFilter('Gasoline')" :class="{ active: selectedFilter === 'Gasoline' }">GASOLINE</button>
+                <button @click="setFilter('Hybrid')" :class="{ active: selectedFilter === 'Hybrid' }">HYBRID</button>
+                <button @click="setFilter('Electric')" :class="{ active: selectedFilter === 'Electric' }">ELECTRIC</button>
+                <button
+                  v-if="role === 'ADMIN'"
+                  @click="redirectToRoute('/create/car')"
+                >
+                  ADD A CAR
+                </button>
               </div>
               <div class="car-list">
                 <CarCard
-                  v-for="car in cars"
+                  v-for="car in filteredCars"
                   :key="car.car_id"
                   :id="car.car_id"
                   v-bind="car"
@@ -161,21 +178,14 @@ export default {
   width: 100%;
 }
 
+button.active {
+  background-color: #660000;
+  border: 2px solid #FF4500;
+}
+
 .car-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.user-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-.user-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 

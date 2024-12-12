@@ -70,8 +70,25 @@ export default {
   },
   data() {
     return {
-      franchises: francesData
+      franchises: [],
+      loading: true,
+      error: null,
     };
+  },
+  async created() {
+    try {
+      const response = await fetch('http://localhost:3000/franchise/getAllFranchises');
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      this.franchises = data.allFranchises;
+    } catch (error) {
+      this.error = 'Failed to load franchises.';
+      console.error('Error fetching franchises:', error);
+    } finally {
+      this.loading = false;
+    }
   },
 }
 </script>

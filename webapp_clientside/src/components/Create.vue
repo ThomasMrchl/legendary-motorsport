@@ -57,13 +57,10 @@
             <label for="Engine Type">Engine Type:</label>
             <select id="enginetype-selection" v-model="car.car_engine" required>
               <option value="">-- Please choose an engine type --</option>
-              <option value="electric">Electric</option>
-              <option value="V2">V2</option>
-              <option value="V4">V4</option>
-              <option value="V6">V6</option>
-              <option value="V8">V8</option>
-              <option value="V10">V10</option>
-              <option value="V12">V12</option>
+              <option value="Electric">Electric</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Diesel">Diesel</option>
+              <option value="Gasoline">Gasoline</option>
             </select>
 
             <label for="Horsepower">Horsepower:</label>
