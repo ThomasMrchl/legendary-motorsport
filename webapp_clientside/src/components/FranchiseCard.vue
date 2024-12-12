@@ -13,7 +13,7 @@ export default {
 <template>
   <div class="car-card">
     <div class="top-banner">
-      <p>{{name}} Legendary Motorsport.</p>
+      <p>Legendary Motorsport : {{name}}</p>
     </div>
     <div class="bottom-banner">
       <p>{{capacity}} vehicules available.</p>

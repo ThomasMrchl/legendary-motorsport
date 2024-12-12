@@ -72,7 +72,7 @@
                 <label for="Engine Type">Engine Type:</label>
                 <select id="enginetype-selection" v-model="car.car_engine" required>
                   <option
-                    v-for="engine in ['electric', 'V2', 'V4', 'V6', 'V8', 'V10', 'V12']"
+                    v-for="engine in ['Electric', 'Hybrid', 'Diesel', 'Gasoline']"
                     :value="engine">
                     {{ engine.charAt(0).toUpperCase() + engine.slice(1) }}
                   </option>

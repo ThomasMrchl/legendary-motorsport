@@ -20,7 +20,7 @@
             <section class="text-container">
               <div class="title">LUXURY CARS JUST FOR YOU !</div>
               <p>Are you looking for a safe, eco-friendly, fuel-efficient car that's practical for getting around town? <span class="red">You're on the wrong website</span>. Are you looking to have them dripping as you pass by? Welcome! You're in a safe place. </p>
-              <a href="/catalog"><button>CATALOG</button></a>
+              <button @click="$router.push('/catalog')">CATALOG</button>
             </section>
             <img :src="require('@/assets/img/gta5garage.png')" alt="Image of a Garage with cars">
           </section>
@@ -41,7 +41,7 @@
                 :name="franchise.franchise_name"
                 :capacity="franchise.franchise_capacity"
                 :phonenumber="franchise.franchise_phone_number"
-                :openingyear="franchise.franchise_opening_year"
+                :openingyear="franchise.franchise_year"
               />
             </div>
           </section>
