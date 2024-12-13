@@ -42,6 +42,7 @@
                 :capacity="franchise.franchise_capacity"
                 :phonenumber="franchise.franchise_phone_number"
                 :openingyear="franchise.franchise_year"
+                :cars="franchise.franchise_cars"
               />
             </div>
           </section>
@@ -61,7 +62,6 @@
 <script>
 import Footer from "./Footer.vue";
 import FranchiseCard from "./FranchiseCard.vue";
-import francesData from '../data/fake-franchises.json';
 export default {
   name: 'Home',
   components: {

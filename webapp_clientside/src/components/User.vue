@@ -25,19 +25,9 @@ export default {
         const date = new Date(this.user.user_created);
         this.user.user_created = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
     },
-    async getSession(){
-        try {
-            const username = await axios.get('http://localhost:3000/auth/session-status', { withCredentials: true });
-            this.getCarsOwned(username.data.user.user_name);
-            return this.getUser(username.data.user.user_name);
-        } catch (err) {
-            console.log(err);
-            return false;
-        }
-    },
-    async getUser(name) {
+    async getUser() {
     try{
-        const response = await axios.get('http://localhost:3000/user/getUserbyName/' + name);
+        const response = await axios.get('http://localhost:3000/user/getUserbyName');
         this.user = response.data.user[0];
         if (this.user.user_address){
           this.getAddress(this.user.user_address);
@@ -50,9 +40,9 @@ export default {
         return false;
     }
     },
-    async getCarsOwned(name) {
+    async getCarsOwned() {
     try{
-        const response = await axios.get('http://localhost:3000/car/getCarsByOwner/' + name);
+        const response = await axios.get('http://localhost:3000/car/getCarsByOwner');
         if (response.data.carsByOwner){
             this.carlist = response.data.carsByOwner;
         }
@@ -110,7 +100,7 @@ redirectToRoute(route) {
         const { user_firstname, user_lastname, user_birthdate } = this.user;
 
         try {
-            const response = await fetch(`http://localhost:3000/user/updateUser/${this.user.user_name}`, {
+            const response = await fetch(`http://localhost:3000/user/updateUser`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -140,7 +130,8 @@ redirectToRoute(route) {
   },
   mounted() {
     this.setDate();
-    this.getSession();
+    this.getCarsOwned();
+    this.getUser();
   },
   components: {
     Footer,

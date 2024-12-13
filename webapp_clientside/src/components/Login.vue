@@ -20,9 +20,14 @@ export default {
           },
           {withCredentials: true}
         );
-
-        console.log("Login successful:", response.data);
-        await this.$router.push("/catalog");
+        
+        if (response.data.loginResult){
+          console.log("Login successful:", response.data);
+          await this.$router.push("/catalog");
+        } else {
+          console.log("Login failed:", response.data);
+          alert("Login Failed: Wrong username or password");
+        }
 
       } catch (error) {
         const errorMessage =

@@ -1,6 +1,17 @@
 const pool = require('../databases/db');
 
 exports.getAllUsers = async (req, res) => {
+
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const role = req.user.user_role;
+
+    if (role != 'ADMIN') {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
     try {
         const [allUsers] = await pool.query('SELECT * FROM user');
 
@@ -16,8 +27,14 @@ exports.getAllUsers = async (req, res) => {
 };
 
 exports.getUserbyName = async (req, res) => {
+
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const name = req.user.user_name;
+
     try {
-        const { name } = req.params;
         const [user] = await pool.query('SELECT * FROM user WHERE user_name = ?', [name]);
 
         if (user.length === 0) {
@@ -33,13 +50,15 @@ exports.getUserbyName = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-    try {
-        const { name } = req.params;
-        const { user_firstname, user_lastname, user_birthdate } = req.body;
 
-        if (!name) {
-            return res.status(400).json({ message: "User name is required" });
-        }
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const name = req.user.user_name;
+
+    try {
+        const { user_firstname, user_lastname, user_birthdate } = req.body;
 
         if (!user_firstname || !user_lastname || !user_birthdate) {
             return res.status(400).json({ message: "Firstname, lastname, and birthdate are required" });
@@ -69,16 +88,27 @@ exports.updateUser = async (req, res) => {
 
 
 exports.deleteUser = async (req, res) => {
-    try {
-        const { id } = req.params;
 
-        if (!id) {
-            return res.status(400).json({ message: "User ID is required" });
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const role = req.user.user_role;
+
+    if (role != 'ADMIN') {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+        const { name } = req.params;
+
+        if (!name) {
+            return res.status(400).json({ message: "User name is required" });
         }
 
-        const querySQL = `DELETE FROM user WHERE id_user = ?`;
+        const querySQL = `DELETE FROM user WHERE user_name = ?`;
 
-        const [result] = await pool.query(querySQL, [id]);
+        const [result] = await pool.query(querySQL, [name]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "User not found" });

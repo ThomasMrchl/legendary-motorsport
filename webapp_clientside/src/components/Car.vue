@@ -68,6 +68,7 @@ export default {
       try {
         const response = await fetch(`http://localhost:3000/car/deleteCar/${this.id}`, {
           method: "POST",
+          credentials: 'include',
           headers: {
             "Content-Type": "application/json",
           },
@@ -128,13 +129,12 @@ export default {
     <div class="car-card">
       <div class="car-image-wrapper">
         <img
-          src="https://jolstatic.fr/upload/gta5/ImagesArticles/PresentationGTAo/importexport.jpg"
+          :src="car.car_image"
           alt="Car image"
           class="car-image"
         />
       </div>
 
-      <!-- Car Details -->
       <div class="car-content">
         <h2 class="car-title">{{ car.car_brand }} - {{ car.car_model }}</h2>
         <p class="car-price">💰 <strong>${{ car.car_selling_price.toLocaleString() }}</strong></p>
@@ -142,7 +142,6 @@ export default {
           {{ car.description || "An amazing car with stunning features, perfect for anyone looking for performance and style." }}
         </p>
 
-        <!-- Additional Details -->
         <div class="car-details">
           <p><strong>Color:</strong> {{ car.car_color }}</p>
           <p><strong>Status:</strong> {{ car.car_status }}</p>
@@ -150,8 +149,7 @@ export default {
           <p><strong>Engine:</strong> {{ car.car_engine }}</p>
           <p><strong>Horsepower:</strong> {{ car.car_horsepower }} HP</p>
         </div>
-
-        <!-- Action Buttons -->
+        
         <div class="car-actions">
           <div v-if="car.car_status === 'Available' && loggedIn">
             <button class="buy-button" @click="buyCar">Buy Now</button>

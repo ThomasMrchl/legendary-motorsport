@@ -1,8 +1,22 @@
 const pool = require('../databases/db');
 
 exports.getAllFranchises = async (req, res) => {
+
+    const query = `
+        SELECT 
+        f.*,
+        COUNT(c.car_id) AS franchise_cars
+        FROM 
+            franchise f
+        LEFT JOIN 
+            car c 
+        ON 
+            f.franchise_id = c.car_franchise
+        GROUP BY 
+            f.franchise_id;`
+
     try {
-        const [allFranchises] = await pool.query('SELECT * FROM franchise');
+        const [allFranchises] = await pool.query(query);
 
         if (allFranchises.length === 0) {
             return res.status(404).send({'message': 'No franchise found.'});
@@ -51,6 +65,17 @@ exports.getFranchiseList = async (req, res) => {
 
 
 exports.deleteFranchise = async (req, res) => {
+
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const role = req.user.user_role;
+
+    if (role != 'ADMIN') {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
     try {
         const { id } = req.params;
 

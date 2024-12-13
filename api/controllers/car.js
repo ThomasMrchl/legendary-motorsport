@@ -83,10 +83,14 @@ exports.buyCar = async (req, res) => {
 
 exports.getCarsByOwner = async (req, res) => {
 
-    if (!req?.params?.owner) return res.status(400).json({ 'message': 'Owner required.' });
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const owner = req.user.user_name;
 
     try {
-        const [carsByOwner] = await pool.query('SELECT * FROM car WHERE car_owner = ?', [req.params.owner]);
+        const [carsByOwner] = await pool.query('SELECT * FROM car WHERE car_owner = ?', [owner]);
         if (carsByOwner.length == 0) {  
             return res.status(200).send({'message': 'No car for this user.'});
         }
@@ -100,6 +104,16 @@ exports.getCarsByOwner = async (req, res) => {
 
 exports.createCar = async (req, res) => {
 
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const role = req.user.user_role;
+
+    if (role != 'ADMIN') {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
     try {
         const {
             car_brand,
@@ -111,12 +125,13 @@ exports.createCar = async (req, res) => {
             car_condition,
             car_engine,
             car_franchise,
-            car_color
+            car_color,
+            car_image
         } = req.body;
 
         const requiredFields = [
             'car_brand', 'car_model', 'car_horsepower', 'car_mileage', 'car_initial_price',
-            'car_selling_price', 'car_condition', 'car_engine', 'car_franchise', 'car_color'];
+            'car_selling_price', 'car_condition', 'car_engine', 'car_franchise', 'car_color', 'car_image'];
 
         const missingFields = requiredFields.filter(field => !req.body[field]);
         if (missingFields.length > 0) {
@@ -127,8 +142,8 @@ exports.createCar = async (req, res) => {
 
         const querySQL = `
             INSERT INTO car
-            (car_brand, car_model, car_horsepower, car_mileage, car_initial_price, car_selling_price, car_owner, car_status, car_condition, car_engine, car_franchise, car_color)
-            VALUES (?, ?, ?, ?, ?, ?, NULL, 'Available', ?, ?, ?, ?)
+            (car_brand, car_model, car_horsepower, car_mileage, car_initial_price, car_selling_price, car_owner, car_status, car_condition, car_engine, car_franchise, car_color, car_image)
+            VALUES (?, ?, ?, ?, ?, ?, NULL, 'Available', ?, ?, ?, ?, ?)
         `;
 
         const [result] = await pool.query(querySQL, [
@@ -141,7 +156,8 @@ exports.createCar = async (req, res) => {
             car_condition,
             car_engine,
             car_franchise,
-            car_color
+            car_color,
+            car_image
         ]);
 
 
@@ -160,6 +176,17 @@ exports.createCar = async (req, res) => {
 };
 
 exports.deleteCar = async (req, res) => {
+
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const role = req.user.user_role;
+
+    if (role != 'ADMIN') {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
     try {
         const { id } = req.params;
 
@@ -186,6 +213,17 @@ exports.deleteCar = async (req, res) => {
 };
 
 exports.updateCar = async (req, res) => {
+
+    if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const role = req.user.user_role;
+
+    if (role != 'ADMIN') {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
+
     try {
         const { id } = req.params;
 
@@ -201,12 +239,13 @@ exports.updateCar = async (req, res) => {
             car_condition,
             car_engine,
             car_franchise,
-            car_color
+            car_color,
+            car_image
         } = req.body;
 
         const requiredFields = [
             'car_brand', 'car_model', 'car_horsepower', 'car_mileage', 'car_initial_price', 'car_selling_price',
-            'car_condition', 'car_engine', 'car_franchise', 'car_color'];
+            'car_condition', 'car_engine', 'car_franchise', 'car_color', 'car_image'];
 
         // Check for missing fields
         const missingFields = requiredFields.filter(field => req.body[field] === undefined);
@@ -227,7 +266,8 @@ exports.updateCar = async (req, res) => {
             car_condition,
             car_engine,
             car_franchise,
-            car_color 
+            car_color,
+            car_image
         ];
 
         let querySQL = '';
@@ -247,6 +287,7 @@ exports.updateCar = async (req, res) => {
                     car_engine = ?, 
                     car_franchise = ?, 
                     car_color = ?,
+                    car_image = ?,
                     car_owner = ?
                 WHERE car_id = ?;
             `;
@@ -268,7 +309,8 @@ exports.updateCar = async (req, res) => {
                     car_condition = ?, 
                     car_engine = ?, 
                     car_franchise = ?, 
-                    car_color = ?
+                    car_color = ?,
+                    car_image = ?
                 WHERE car_id = ?;
             `;
 
